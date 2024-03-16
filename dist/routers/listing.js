@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const router = express_1.default.Router();
+const listing_1 = require("../controllers/listing");
+const reservation_1 = require("../controllers/reservation");
+const review_1 = require("../controllers/review");
+const authentication_1 = require("../middleware/authentication");
+router.route('/').get(listing_1.getAllListings).post(authentication_1.authentication, (0, authentication_1.restrictFunctionalityTo)('host'), listing_1.createListing);
+router.route('/:id/reservation').get(authentication_1.authentication, (0, authentication_1.restrictFunctionalityTo)('host'), reservation_1.getAllListingReservations).post(authentication_1.authentication, (0, authentication_1.restrictFunctionalityTo)('guest', 'host'), reservation_1.createPaymentIntent);
+router.route('/:id/reservation/create').post(authentication_1.authentication, (0, authentication_1.restrictFunctionalityTo)('guest', 'host'), reservation_1.createReservation);
+router.route('/:id/review/auth').get(authentication_1.authentication, review_1.getAllListingReviewsWithAuth);
+router.route('/:id/review').get(review_1.getAllListingReviews);
+router.route('/:id/review').post(authentication_1.authentication, (0, authentication_1.restrictFunctionalityTo)('guest', 'host'), review_1.createReview);
+router.route('/:id/review/:reviewId').patch(authentication_1.authentication, (0, authentication_1.restrictFunctionalityTo)('guest', 'admin'), review_1.updateSingleReview).delete(authentication_1.authentication, (0, authentication_1.restrictFunctionalityTo)('guest', 'host'), review_1.deleteSingleReview);
+router.route('/:id/auth').get(authentication_1.authentication, listing_1.getSingleListingWithAuth);
+router.route('/:id').get(listing_1.getSingleListing).patch(authentication_1.authentication, (0, authentication_1.restrictFunctionalityTo)('host'), listing_1.updateSingleListing).delete(authentication_1.authentication, (0, authentication_1.restrictFunctionalityTo)('host'), listing_1.deleteSingleListing);
+exports.default = router;

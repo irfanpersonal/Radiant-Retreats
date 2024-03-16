@@ -1,6 +1,6 @@
 # Radiant Retreats (SERN)
 
-Radiant Retreats is an awesome booking app created using the SERN stack. I've utilized Sequelize Associations to create the "ref, populate" effect from Mongoose and made sure to document every step of the process. This changed the usual model structure a bit. I also integrated Stripe into the application and ensured the reservation is verified before purchase. So, even if someone messes with the price in the front end, it will show the corrected price. All of this makes the payment process super secure and ready to go. I also added proper pagination and search functionality for the listings. This is perfect for finding a specific listing, filtering by country, and meeting your budget. Unlike previous projects, this one has a new way to move between pages that doesn't rely on complicated useEffects. Now, changing the page is done directly through extraReducers, making the need for tricky navigation tricks a thing of the past.
+Radiant Retreats is a useful booking app made with the SERN stack. I've used Sequelize Associations to organize data, similar to how it's done with Mongoose. This might change how the app works a bit, but it helps keep things organized. I've also added Stripe for payments, so reservations are double-checked before you buy them. This makes sure the prices are right, even if someone tries to mess with them on the website. The app has features like searching and paging through listings. You can search for listings by country or budget, which makes it easier to find what you're looking for. There are three types of users: admin, host, and guest. The first person to sign up becomes the admin. Admins can approve hosts and manage their requests. Hosts can create listings and see how much they've earned. Guests can book reservations and see which dates are available using a calendar. They can also leave reviews and see ratings for each listing. When hosts want to get their earnings, they can request a payout. The admin reviews these requests and pays them out if everything looks good. The application also have a very beautiful interface so you will enjoy using it.
 
 ## Technologies Used
 
@@ -16,14 +16,20 @@ Radiant Retreats is an awesome booking app created using the SERN stack. I've ut
 
 2nd - Run the following command "npm install" (install dependencies)
 
-3rd - Create a .env file in root with the following key value pairs: MYSQL_DATABASE_PASSWORD, JWT_SECRET, JWT_LIFETIME, and STRIPE_SECRET_KEY. 
+3rd - Change directory into the src/client folder and run "npm install".
 
-4th - Open up your MySQL server and create a database called RADIANT_RETREATS. So just copy paste this code in an execute it
+4th - Create a .env file in the root of the src/client folder and add the following key value pair: REACT_APP_STRIPE_PUBLISHABLE_KEY
+
+5th - Run "npm run build" in the src/client folder to create a production ready application.
+
+6th - Now create a .env file in the root of your entire project with the following key value pairs: MYSQL_USER, MYSQL_USER_PASSWORD, JWT_SECRET, JWT_LIFETIME, CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET, and STRIPE_SECRET_KEY
+
+Note: The cloud values must be from Cloudinary, which is where we host our images.
+
+7th - Open up your MySQL server and create a database called RADIANT_RETREATS. So just copy paste this code in and execute it
 
 CREATE DATABASE RADIANT_RETREATS;
 
-5th - Go to the index.js file of the client folder and update the public stripe key with yours. Restart the build process. 
-
-6th - Type the following command "npm run start" to start application
+8th - Type the following command "npm run start" to start application
 
 DONE
