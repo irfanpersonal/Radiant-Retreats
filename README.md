@@ -4,6 +4,7 @@ Radiant Retreats is a useful booking app made with the SERN stack. I've used Seq
 
 ## Technologies Used
 
+- [TypeScript](https://www.typescriptlang.org/): A powerful and flexible superset of JavaScript, bringing static typing to your projects.
 - [Sequelize](https://sequelize.org/): A powerful and flexible Node.js ORM for SQL databases.
 - [Express](https://expressjs.com/): Fast, unopinionated, minimalist web framework for Node.js.
 - [React](https://reactjs.org/): A JavaScript library for building user interfaces.
