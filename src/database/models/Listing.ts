@@ -260,9 +260,9 @@ class Listing extends Model<IListing> {
     @BelongsTo(() => User) 
     declare user: User; // Now when I need to populate I will do include: ['user'], which is what I named it.
     @HasMany(() => Reservation)
-    declare reservation: Reservation;
+    declare reservation: Reservation[];
     @HasMany(() => Review)
-    declare review: Review;
+    declare review: Review[];
     @CreatedAt
     declare createdAt: Date;
     @UpdatedAt

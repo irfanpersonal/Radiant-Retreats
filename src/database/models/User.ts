@@ -151,14 +151,14 @@ class User extends Model<IUser> {
     @HasOne(() => HostRequest)
     declare hostRequest: HostRequest;
     @HasMany(() => Listing)
-    declare listing: Listing;
+    declare listing: Listing[];
     @HasMany(() => Reservation)
-    declare reservation: Reservation;
+    declare reservation: Reservation[];
     @HasMany(() => CashOut)
-    declare cashout: CashOut;
+    declare cashout: CashOut[];
     // The @BeforeCreate is a decorator which allows us to specify a method we would
     // like to run when an instance of a User is made or updated
-    @BeforeSave 
+    @BeforeSave
     static hashPasswordOnCreationOfUserOrPasswordChange = async(instance: User) => {
         if (instance.changed('password')) {
             const randomBytes = await bcrypt.genSalt(10);
