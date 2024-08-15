@@ -35,6 +35,15 @@ const RegisterBox: React.FunctionComponent= () => {
     }
     return (
         <Wrapper>
+            <div className="enrollStatus">
+                <div className={'step ' + (currentStep > 0 ? 'done' : '')}></div>
+                <div className={'step ' + (currentStep > 1 ? 'done' : '')}></div>
+                <div className={'step ' + (currentStep > 2 ? 'done' : '')}></div>
+                <div className={'step ' + (currentStep > 3 ? 'done' : '')}></div>
+                <div className={'step ' + (currentStep > 4 ? 'done' : '')}></div>
+                <div className={'step ' + (currentStep > 5 ? 'done' : '')}></div>
+                <div className={'step ' + (currentStep > 6 ? 'done' : '')}></div>
+            </div>
             <div className="content">
                 {currentStep === 0 && (
                     <div>
@@ -108,43 +117,22 @@ const RegisterBox: React.FunctionComponent= () => {
 }
 
 const Wrapper = styled.div`
-    margin: 1rem 0;
-    .content {  
-        .center {
-            text-align: center;
-            margin-bottom: 0.25rem;
-        }
+    .enrollStatus {
+        display:flex;
+        padding-top:30px;
+        padding-bottom:5px;
     }
-    .btn-box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .step {
+        flex:1;
+        height:4px;
+        display:flex;
+        flex-direction:row;
+        background-color:#e7e7e7;
+        margin:0px 2px;
+        border-radius:2px;
     }
-    .prev-btn, .next-btn {
-        background-color: white;
-        user-select: none;
-        cursor: pointer;
-        padding: 0.5rem;
-        width: 25%;
-        text-align: center;
-        outline: 1px solid black;
-    }
-    .prev-btn:hover, .prev-btn:active {
-        background-color: red;
-    }
-    .next-btn:hover, .next-btn:active {
-        background-color: green;
-    }
-    .register-btn {
-        background-color: white;
-        user-select: none;
-        cursor: pointer;
-        padding: 0.5rem;
-        width: 25%;
-        text-align: center;
-        border: none;
-        font-size: 1rem;
-        outline: 1px solid black;
+    .done {
+        background-color:#2d814e;
     }
 `;
 

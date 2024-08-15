@@ -6,6 +6,7 @@ import {deleteSingleReview, updateSingleReview} from '../features/reviews/review
 import {useDispatch} from 'react-redux';
 import {type useDispatchType} from '../store';
 import {useParams} from 'react-router-dom';
+import { FaStar } from "react-icons/fa6";
 
 interface ReviewListItemProps {
     data: ReviewType
@@ -53,96 +54,181 @@ const ReviewListItem: React.FunctionComponent<ReviewListItemProps> = ({data}) =>
             <div className="user-info">
                 <div className="flex">
                     <img className="user-pfp" src={data!.user.profilePicture || emptyProfilePicture} alt={data!.user.firstName}/>
-                    <div>{data!.user.firstName}</div>
+                    <div className="user-info-meta">
+                        <div className="user-info-meta-left">
+                            <div className="user-info-name">{data!.user.firstName}</div>
+                            <div className="review-info-rating"><FaStar size={'14px'} color={'#111111'}/> {isEditing ? (<input id="rating" name="rating" type="number" min="1" max="5" defaultValue={data.rating} required/>) : (`${data.rating}`)}</div>
+                        </div>
+                        
+                        <div className="review-info-title">{isEditing ? (<input id="title" name="title" type="text" defaultValue={data.title} required/>) : (data.title)}</div>
+                        
+                    </div>
+                    
                 </div>
+                
+            </div>
+         
+            <div className="reviewContent">
+                {isEditing ? 
+                    (<textarea id="content" name="content" defaultValue={data.content} required></textarea>) 
+                    : 
+                    (<div>{data.content}</div>) 
+                }
+            </div>
+            
+            <div className="reviewActions">
+                {isEditing && (
+                    <div className="reviewEdit" onClick={() => handleEdit(data.id)}>Submit</div>
+                )}
+                {data.isMyComment && (
+                    <div className="reviewCancel" onClick={() => {
+                        setIsEditing(currentState => {
+                            return !currentState;
+                        });
+                    }}>{isEditing ? 'Cancel' : 'Edit'}</div>
+                )}
+                
                 {data!.isMyComment && (
-                    <div className="btn" onClick={() => {
+                    <div className="reviewDelete" onClick={() => {
                         dispatch(deleteSingleReview({listingID: listingID!, reviewID: data!.id}));
                     }}>Delete</div>
                 )}
+
             </div>
-            <div className="review-header">
-                <div>{isEditing ? (<input id="title" name="title" type="text" defaultValue={data.title} required/>) : (data.title)}</div>
-                <div>{isEditing ? (<input id="rating" name="rating" type="number" min="1" max="5" defaultValue={data.rating} required/>) : (`⭐️ ${data.rating}`)}</div>
-            </div>
-            <p>{isEditing ? (<textarea id="content" name="content" defaultValue={data.content} required></textarea>) : (data.content)}</p>
-            {data.isMyComment && (
-                <div className="btn" onClick={() => {
-                    setIsEditing(currentState => {
-                        return !currentState;
-                    });
-                }}>{isEditing ? 'Cancel' : 'Edit'}</div>
-            )}
-            {isEditing && (
-                <div onClick={() => handleEdit(data.id)} className="btn margin-left">Edit</div>
-            )}
+            
         </Wrapper>
     );
 }
 
 const Wrapper = styled.div`
-    border-radius: 1rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-    margin-top: 1rem;
-    & > div {
-        margin-bottom: 15px;
-    }
-    div {
-        font-size: 1.25rem;
-        font-weight: bold;
-        color: #333;
-    }
-    p {
-        color: gray;
-        line-height: 1.5;
-    }
+    margin: 20px 0px;
+    padding: 20px 20px;
+    border-bottom: 1px solid #e7e7e7;
+    background-color: #f5f5f4;
+    border: 1px solid rgba(17, 17, 17, 0.04);
+    border-radius: 20px;
+
     .user-info {
         display: flex;
+        flex-direction:row;
         align-items: center;
         justify-content: space-between;
         .flex {
+            flex:1;
             display: flex;
             align-items: center;
         }
         .user-pfp {
-            width: 3rem;
-            height: 3rem;
-            outline: 1px solid black;
-            margin-right: 1rem;
+            width: 80px;
+            height:80px;
+            border-radius:12px;
+            box-shadow:0px 1px 2px rgba(0,0,0,0.20);
+        }
+        .user-info-name {
+            font-weight:600;
+            font-size:14px;
+            padding-left:14px;
+        }
+        .review-info-title {
+            display:flex;
+            font-size:14px;
+            font-weight:400;
+            padding-left:14px;
+        }
+        .review-info-title input {
+            flex:1;
+            display:flex;
+            border-width:0px;
+            padding:14px;
+            border-radius:12px;
+            background-color:#FFFFFF;
+        }
+        .user-info-meta {
+            flex:1;
+            display:flex;
+            flex-direction:column;
+        }
+        .user-info-meta-left {
+            flex:1;
+            display:flex;
+            flex-direction:row;
+            align-items:center;
+            justify-content:space-between;
+        }
+        .review-info-rating {
+            font-size:14px;
+            font-weight:600;
+            display:flex;
+            flex-direction:row;
+            align-items:center;
+        }
+        .review-info-rating svg {
+            margin-top:-2px;
+            margin-right:4px;
+        }
+        .review-info-rating input {
+            display:flex;
+            border-width:0px;
+            padding:10px 10px;
+            border-radius:12px;
+            background-color:#F5F5F4;
         }
     }
-    .review-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid black;
-        padding-bottom: 0.5rem;
+    .reviewContent {
+        display:flex;
+        flex-direction:column;
     }
-    .btn {
-        display: inline-block;
+    .reviewContent div {
+        font-size:14px;
+        padding-top:20px;
+    }
+    .reviewContent textarea {
+        flex:1;
+        display:flex;
+        border-width:0px;
+        padding:14px;
+        border-radius:12px;
+        margin:20px 0px;
+        resize:none;
+        background-color:#FFFFFF;
+    }
+    .reviewActions {
+        display:flex;
+        flex-direction:row;
+    }
+    .reviewCancel {
+        color: #FFFFFF;
+        font-size: 12px;
+        padding: 12px 30px;
+        border-radius: 12px;
+        background-color: #000000;
+        margin-top:20px;
+        margin-right: 10px;
         cursor: pointer;
-        background-color: lightgray;
-        outline: 1px solid black;
-        min-width: 15%;
-        padding: 0.25rem 0.5rem;
-        text-align: center;
-        margin-top: 1rem;
     }
-    .btn:hover, .btn:active {
-        background-color: white;
+    .reviewEdit {
+        color: #FFFFFF;
+        font-size: 12px;
+        padding: 12px 30px;
+        border-radius: 12px;
+        background-color: #000000;
+        margin-top:20px;
+        margin-right: 10px;
+        cursor: pointer;
     }
-    .margin-left {
-        margin-left: 1rem;
+    .reviewDelete {
+        color: #FFFFFF;
+        font-size: 12px;
+        padding: 12px 30px;
+        border-radius: 12px;
+        background-color: #d13b53;
+        margin-top:20px;
+        margin-right: 10px;
+        cursor: pointer;
     }
-    input, textarea {
-        padding: 0.25rem;
-    }
-    textarea {
-        width: 100%;
-        height: 5rem;
-        resize: none;
-    }
+
+
+    
     .error-message {
         color: red;
         outline: 1px solid black;

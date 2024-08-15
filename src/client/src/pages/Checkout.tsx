@@ -45,7 +45,7 @@ const Checkout: React.FunctionComponent = () => {
         }
     }, [successfullyPayed]);
     return (
-        <Wrapper>
+        <Wrapper className="containerMin">
             {paymentIntentData && (
                 <form onSubmit={handleSubmit}>
                     <h1 className="title">Checkout</h1>
@@ -53,15 +53,21 @@ const Checkout: React.FunctionComponent = () => {
                         <ImageViewer data={paymentIntentData!.listing.photos} fullWidth={false} viewType='advanced'/>
                     </div>
                     <p className="checkout-detail">You are about to make a reservation at <span className="important-info">{paymentIntentData!.listing.name}</span>. This action cannot be undone so please make sure that you are happy with your timings.</p>
+                    
                     <div className="checkout-detail">Start Date: <span className="important-info">{paymentIntentData!.startDate}</span></div>
                     <div className="checkout-detail">End Date: <span className="important-info">{paymentIntentData!.endDate}</span></div>
                     <div className="checkout-detail">Your total charge for your stay will be $<span className="important-info">{Number(paymentIntentData!.total) / 100}</span></div>
+                    
                     <CardElement className="card"/>
-                    <button onClick={() => {
-                        dispatch(resetPurchaseData());
-                        navigate(`/listing/${paymentIntentData!.listing.id}`);
-                    }} style={{marginBottom: '0.5rem'}} type="button">Cancel</button>
-                    <button type="submit" disabled={!stripe || createReservationLoading}>{createReservationLoading ? 'PAYING' : 'PAY'}</button>
+                    
+                    <div className="actionRow">
+                        <button className="payButton" type="submit" disabled={!stripe || createReservationLoading}>{createReservationLoading ? 'Paying' : 'Pay'}</button>
+                        <button className="cancelButton" onClick={() => {
+                            dispatch(resetPurchaseData());
+                            navigate(`/listing/${paymentIntentData!.listing.id}`);
+                        }} style={{marginBottom: '0.5rem'}} type="button">Cancel</button>
+                    </div>
+                    
                 </form>
             )}
         </Wrapper>
@@ -73,12 +79,10 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     form {
-        width: 50%;
-        outline: 1px solid black;
-        padding: 1rem;
+        
         .title {
-            text-align: center;
-            border-bottom: 1px solid black;
+            font-weight:500;
+            padding-top:40px;
         }
         .images {
             margin: 1rem 0;
@@ -86,8 +90,7 @@ const Wrapper = styled.div`
         .checkout-detail {
             margin-bottom: 1rem;
             span {
-                background-color: lightgray;
-                padding: 0 0.25rem;
+                font-weight:600;
             }
         }
         .card {
@@ -96,14 +99,45 @@ const Wrapper = styled.div`
             margin: 1rem 0;
             font-size: 1rem;
             border: 1px solid rgb(204, 204, 204);
-            border-radius: 0.25rem;
+            border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             background-color: white;
         }
-        button {
-            width: 100%;
-            padding: 0.25rem;
+        .actionRow {
+            display:flex;
+            flex-direction:row;
+            margin-top:20px;
         }
+        .payButton {
+            height: 48px;
+            color: #FFFFFF;
+            font-weight: 500;
+            padding:0px 80px;
+            border-radius: 12px;
+            border-width: 0px;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #2d814e;
+            cursor:pointer;
+        }
+        .cancelButton {
+            height: 48px;
+            color: #FFFFFF;
+            font-weight: 500;
+            padding:0px 40px;
+            border-radius: 12px;
+            border-width: 0px;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #d13b53;
+            margin-left:20px;
+            cursor:pointer;
+        }
+    }
+    @media (max-width:768px) {
+        padding:0px 30px;
     }
 `;
 

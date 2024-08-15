@@ -5,6 +5,7 @@ import {PaginationBox, UserListItem} from '../components';
 import {nanoid} from 'nanoid';
 import {MdGridView} from "react-icons/md";
 import {GiHamburgerMenu} from "react-icons/gi";
+import { CiFilter, CiGrid41, CiGrid2H } from "react-icons/ci";
 
 type ViewType = 'grid' | 'list';
 
@@ -23,17 +24,26 @@ const UserList: React.FunctionComponent<UserListProps> = ({data, totalUsers, num
     return (
         <Wrapper>
             {totalUsers ? (
-                <div className="list-info">
-                    <div>{totalUsers} User{totalUsers! > 1 && 's'} Found...</div>
-                    <div>
-                        <MdGridView onClick={() => setViewType(currentState => 'grid')} className={`view-type ${viewType === 'grid' && 'active-type'}`}/>
-                        <GiHamburgerMenu onClick={() => setViewType(currentState => 'list')} className={`view-type ${viewType === 'list' && 'active-type'}`}/>
+                <div className="pageHeader">
+                    <h1>{totalUsers} User{totalUsers! > 1 && 's'} Found.</h1>
+              
+
+
+                    <div className="listingType">
+                        <div className={`listingTypeItem ${viewType === 'grid' ? 'active' : ''}`} onClick={() => setViewType('grid')}>
+                            <CiGrid41 size={'20px'} color={'#717171'} />
+                        </div>
+                        <div className={`listingTypeItem ${viewType === 'list' ? 'active' : ''}`} onClick={() => setViewType('list')}>
+                            <CiGrid2H size={'20px'} color={'#717171'} />
+                        </div>
                     </div>
+
+
                 </div>
             ) : (
                 <div style={{textAlign: 'center', marginTop: '1rem', textDecoration: 'underline'}}>No Users Found</div>
             )}
-            <section className={`${viewType === 'grid' && 'grid-styling'}`}>
+            <section className={`${viewType !== 'grid' ? 'list-styling' : ''}${viewType === 'grid' ? 'grid-styling' : ''}`}>
                 {data.map(item => {
                     return (
                         <UserListItem data={item} key={nanoid()}/>
@@ -48,28 +58,49 @@ const UserList: React.FunctionComponent<UserListProps> = ({data, totalUsers, num
 }
 
 const Wrapper = styled.section`
-    .list-info {
-        display: flex;
+    .pageHeader {
+        padding:30px;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
         justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid black;
-        margin-bottom: 1rem;
+        h1 {
+            font-size:24px;
+            font-weight:600;
+        }
     }
-    .view-type {
-        cursor: pointer;
-        font-size: 1.5rem;
-        margin-left: 0.5rem;
-        padding: 0.25rem;
-        border-radius: 0.5rem;
-        outline: 1px solid black;
+    .listingType {
+        padding:3px;
+        display:flex;
+        flex-direction:row;
+        border-radius:12px;
+        background-color:#F3F3F2;
     }
-    .active-type {
-        background-color: rgb(146, 199, 207);
+    .listingTypeItem {
+        width:34px;
+        height:34px;
+        margin:3px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+    .listingTypeItem.active {
+        border-radius:8px;
+        background-color:#000000;
+    }
+    .listingTypeItem.active svg {
+        color:#FFFFFF !important;
     }
     .grid-styling {
+        padding:0px 30px;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+    }
+    .list-styling {
+        padding:0px 30px;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
     }
 `;
 

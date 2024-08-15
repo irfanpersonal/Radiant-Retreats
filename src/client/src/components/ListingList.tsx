@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import {type ListingType} from '../features/listing/listingSlice';
-import {PaginationBox, ListingListItem} from '../components';
-import {nanoid} from 'nanoid';
-import {MdGridView} from "react-icons/md";
-import {GiHamburgerMenu} from "react-icons/gi";
+import { type ListingType } from '../features/listing/listingSlice';
+import { PaginationBox, ListingListItem } from '../components';
+import { nanoid } from 'nanoid';
+import { MdGridView } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
 
-type ViewType = 'grid' | 'list';
+export type ViewType = 'grid' | 'list';
 
 interface ListingListProps {
     data: ListingType[],
@@ -15,33 +15,32 @@ interface ListingListProps {
     page: number,
     changePage: Function,
     updateSearch: Function,
+    viewType: ViewType,
+    setViewType: React.Dispatch<React.SetStateAction<ViewType>>,
     _id?: string
 }
 
-const ListingList: React.FunctionComponent<ListingListProps> = ({data, totalListings, numberOfPages, page, changePage, updateSearch, _id}) => {
-    const [viewType, setViewType] = React.useState<ViewType>('grid');
+const ListingList: React.FunctionComponent<ListingListProps> = ({ data, totalListings, numberOfPages, page, changePage, updateSearch, viewType, setViewType, _id }) => {
     return (
         <Wrapper>
             {totalListings ? (
-                <div className="list-info">
-                    <div>{totalListings} Listing{totalListings! > 1 && 's'} Found...</div>
+                <div className="list-info displayNone">
+                    <div>{totalListings} Listing{totalListings !== 1 ? 's' : ''} Found...</div>
                     <div>
-                        <MdGridView onClick={() => setViewType(currentState => 'grid')} className={`view-type ${viewType === 'grid' && 'active-type'}`}/>
-                        <GiHamburgerMenu onClick={() => setViewType(currentState => 'list')} className={`view-type ${viewType === 'list' && 'active-type'}`}/>
+                        <MdGridView onClick={() => setViewType('grid')} className={`view-type ${viewType === 'grid' && 'active-type'}`} />
+                        <GiHamburgerMenu onClick={() => setViewType('list')} className={`view-type ${viewType === 'list' && 'active-type'}`} />
                     </div>
                 </div>
-            ): (
-                <div style={{textAlign: 'center', marginTop: '1rem', textDecoration: 'underline'}}>No Listing Found</div>
+            ) : (
+                <div style={{ textAlign: 'center', marginTop: '1rem', textDecoration: 'underline' }}>No Listing Found</div>
             )}
-            <section className={`${viewType === 'grid' && 'grid-styling'}`}>
-                {data.map(item => {
-                    return (
-                        <ListingListItem data={item} key={nanoid()}/>
-                    );
-                })}
+            <section className={`${viewType !== 'grid' ? 'list-styling' : ''}${viewType === 'grid' ? 'grid-styling' : ''}`}>
+                {data.map(item => (
+                    <ListingListItem data={item} key={nanoid()} />
+                ))}
             </section>
-            {numberOfPages! > 1 && (
-                <PaginationBox numberOfPages={numberOfPages!} page={page} changePage={changePage} updateSearch={updateSearch} _id={_id}/>
+            {numberOfPages > 1 && (
+                <PaginationBox numberOfPages={numberOfPages} page={page} changePage={changePage} updateSearch={updateSearch} _id={_id} />
             )}
         </Wrapper>
     );
@@ -53,7 +52,6 @@ const Wrapper = styled.section`
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid black;
-        margin-bottom: 1rem;
     }
     .view-type {
         cursor: pointer;
@@ -61,15 +59,27 @@ const Wrapper = styled.section`
         margin-left: 0.5rem;
         padding: 0.25rem;
         border-radius: 0.5rem;
-        outline: 1px solid black;
     }
     .active-type {
         background-color: rgb(146, 199, 207);
     }
     .grid-styling {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        padding:30px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+    }
+    .list-styling {
+        display: grid;
+        padding:30px;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 30px;
+        .listingImageIco {
+            height:400px;
+        }
+        .listing-item-footer {
+            padding-top:20px;
+        }
     }
 `;
 

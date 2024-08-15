@@ -14,7 +14,7 @@ const CashOut: React.FunctionComponent = () => {
     }, []);
     return (
         <Wrapper>
-            <div className="container">
+            <div className="stacked">
                 <div className="twenty-five">
                     <CashOutSearchBox resetSearchBoxValues={resetSearchBoxValues} updateSearchBoxValues={updateSearchBoxValues} updateSearch={getAllCashOuts} searchBoxValues={searchBoxValues}/>
                 </div>
@@ -31,16 +31,7 @@ const CashOut: React.FunctionComponent = () => {
 }
 
 const Wrapper = styled.div`
-    .container {
-        display: flex;
-        .twenty-five {
-            width: 23%;
-        }
-        .seventy-five {
-            margin-left: auto;
-            width: 75%;
-        }
-    }
+    
 `;
 
 export default CashOut;

@@ -31,76 +31,109 @@ const SingleHostRequest: React.FunctionComponent = () => {
                 <Loading title="Loading Host Request" position='normal'/>
             ) : (
                 <>
-                    <div className="host-request-header">
-                        <div className="icon back" onClick={() => navigate(-1)}>
-                            <div><FaArrowAltCircleLeft/></div>
-                        </div>
-                        {hostRequest!.status === 'pending' && (
-                            <>
-                                {editSingleHostRequestLoading ? (
-                                    <div>🕕</div>
-                                ) : (
-                                    <div className="host-request-header-options">
-                                        <div title="Reject" onClick={() => {
-                                            dispatch(updateSingleHostRequest({id: id!, data: 'rejected'}));
-                                        }}><FaTimesCircle className="cancel"/></div>
-                                        <div title="Accept" onClick={() => {
-                                            dispatch(updateSingleHostRequest({id: id!, data: 'accepted'}));
-                                        }}><FaCheckCircle className="accept"/></div>
+                    <div className="containerMin">
+                        <div className="containerMain">
+                            
+                            <div className="mcLeft">
+                                <img className="userImg" src={hostRequest!.user.profilePicture || emptyProfilePicture} alt={hostRequest!.user.name}/>
+                            </div>
+                            
+                            <div className="mcRight">
+                                <div className="userMeta">
+                                    <div className="umCombo">
+                                        <div className="umItem">
+                                            <span>First Name:</span>
+                                            <div>{capitalizeFirstLetter(hostRequest!.user.firstName)}</div>
+                                        </div>
+                                        <div className="umItem">
+                                            <span>Last Name:</span>
+                                            <div>{capitalizeFirstLetter(hostRequest!.user.lastName)}</div>
+                                        </div>
                                     </div>
+                                    
+                                    <div className="umCombo">
+                                        <div className="umItem">
+                                            <span>Birthday:</span>
+                                            <div>{moment(hostRequest!.user.birthdate).utc().format('MM-DD-YYYY')}</div>
+                                        </div>
+                                        <div className="umItem">
+                                            <span>Phone:</span>
+                                            <div>{phone(hostRequest!.phoneNumber).isValid ? phone(hostRequest!.phoneNumber).phoneNumber : hostRequest!.phoneNumber}</div>
+                                        </div>
+                                    </div>
+                        
+
+                                    <div className="umCombo">
+                                        <div className="umItem">
+                                            <span>Country:</span>
+                                            <div>{hostRequest!.user.country}</div>
+                                        </div>
+                                        <div className="umItem">
+                                            <span>Language:</span>
+                                            <div>{hostRequest!.user.language}</div>
+                                        </div>
+                                    </div>
+                    
+                                    
+                                </div>
+
+                                <div className="userRequest">
+                         
+
+                                    <div className="view-box" onClick={() => {
+                                        setView(currentState => {
+                                            return {...currentState, governmentIssuedID: !currentState.governmentIssuedID};
+                                        });
+                                    }}>
+                                        <div>View Government Issued ID</div>
+                                        <div className="icon">{view.governmentIssuedID ? <IoMdArrowDropup/> : <MdArrowDropDown/>}</div>
+                                    </div>
+                                    {view.governmentIssuedID && (
+                                        <div className="reveal">
+                                            <img id="nice-image" src={hostRequest!.governmentIssuedID} alt={`${hostRequest!.user.firstName} ${hostRequest!.user.lastName}`}/>
+                                        </div>
+                                    )}
+                                    <div className="view-box" onClick={() => {
+                                        setView(currentState => {
+                                            return {...currentState, backgroundCheck: !currentState.backgroundCheck};
+                                        });
+                                    }}>
+                                        <div>View Background Check</div>
+                                        <div className="icon">{view.governmentIssuedID ? <IoMdArrowDropup/> : <MdArrowDropDown/>}</div>
+                                    </div>
+                                    {view.backgroundCheck && (
+                                        <div className="reveal">
+                                            <img id="nice-image" src={hostRequest!.backgroundCheck} alt={`${hostRequest!.user.firstName} ${hostRequest!.user.lastName}`}/>
+                                        </div>
+                                    )}
+                                    <div className="status-box">
+                                        <div>Status: <span className={`circle ${hostRequest!.status === 'accepted' ? 'green' : hostRequest!.status === 'pending' ? 'yellow' : hostRequest!.status === 'rejected' && 'red'}`}></span></div>
+                                        <div>{capitalizeFirstLetter(hostRequest!.status)}</div>
+                                    </div>
+                                </div>
+                                
+                                {hostRequest!.status === 'pending' && (
+                                <>
+                                    {editSingleHostRequestLoading ? (
+                                        <div>🕕</div>
+                                    ) : (
+                                        <div className="actionRow">
+                                            <button className="approve" onClick={() => 
+                                                {
+                                                    dispatch(updateSingleHostRequest({id: id!, data: 'accepted'}));
+                                                }}>Approve Request
+                                            </button>
+                                            <button className="reject" onClick={() => 
+                                                {
+                                                    dispatch(updateSingleHostRequest({id: id!, data: 'rejected'}));
+                                                }}>Reject
+                                            </button>
+                                        </div>
+                                    )}
+                                </>
                                 )}
-                            </>
-                        )}
-                    </div>
-                    <h1 className="title">User Details</h1>
-                    <div className="user-container">
-                        <div>
-                            <img className="user-pfp" src={hostRequest!.user.profilePicture || emptyProfilePicture} alt={hostRequest!.user.name}/>
-                        </div>   
-                        <div>
-                            <p><span>First Name:</span>{capitalizeFirstLetter(hostRequest!.user.firstName)}</p>
-                            <p><span>Last Name:</span>{capitalizeFirstLetter(hostRequest!.user.lastName)}</p>
-                            <p><span>Birthday:</span>{moment(hostRequest!.user.birthdate).utc().format('MM-DD-YYYY')}</p>
-                            <p><span>Country:</span>{hostRequest!.user.country}</p>
-                            <p><span>Language:</span>{hostRequest!.user.language}</p>
-                        </div> 
-                    </div>
-                    <div className="host-request-container">  
-                        <div className="host-request-container-header">
-                            <div className="host-request-detail">
-                                <div><FaPhone/>Phone Number</div>
-                                <div>{phone(hostRequest!.phoneNumber).isValid ? phone(hostRequest!.phoneNumber).phoneNumber : hostRequest!.phoneNumber}</div>
+                                
                             </div>
-                        </div>
-                        <div className="view-box" onClick={() => {
-                            setView(currentState => {
-                                return {...currentState, governmentIssuedID: !currentState.governmentIssuedID};
-                            });
-                        }}>
-                            <div>View Government Issued ID</div>
-                            <div className="icon">{view.governmentIssuedID ? <IoMdArrowDropup/> : <MdArrowDropDown/>}</div>
-                        </div>
-                        {view.governmentIssuedID && (
-                            <div>
-                                <img id="nice-image" src={hostRequest!.governmentIssuedID} alt={`${hostRequest!.user.firstName} ${hostRequest!.user.lastName}`}/>
-                            </div>
-                        )}
-                        <div className="view-box" onClick={() => {
-                            setView(currentState => {
-                                return {...currentState, backgroundCheck: !currentState.backgroundCheck};
-                            });
-                        }}>
-                            <div>View Background Check</div>
-                            <div className="icon">{view.governmentIssuedID ? <IoMdArrowDropup/> : <MdArrowDropDown/>}</div>
-                        </div>
-                        {view.backgroundCheck && (
-                            <div>
-                                <img id="nice-image" src={hostRequest!.backgroundCheck} alt={`${hostRequest!.user.firstName} ${hostRequest!.user.lastName}`}/>
-                            </div>
-                        )}
-                        <div className="status-box">
-                            <div>Status: <span className={`circle ${hostRequest!.status === 'accepted' ? 'green' : hostRequest!.status === 'pending' ? 'yellow' : hostRequest!.status === 'rejected' && 'red'}`}></span></div>
-                            <div>{capitalizeFirstLetter(hostRequest!.status)}</div>
                         </div>
                     </div>
                 </>
@@ -110,98 +143,81 @@ const SingleHostRequest: React.FunctionComponent = () => {
 }
 
 const Wrapper = styled.div`
-    .host-request-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-        border-bottom: 1px solid black;
-        .host-request-header-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            svg {
-                cursor: pointer;
-                margin-left: 1rem;
-                font-size: 1.5rem;
-            }
+    .containerMain {
+        display:flex;
+        flex-direction:row;
+        padding-top:50px;
+        .mcRight {
+            flex:1;
+            display:flex;
+            flex-direction:column;
+            padding-left:40px;
         }
     }
-    .user-container {
-        display: flex;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid black;
-        img {
-            outline: 1px solid black;
-        }
-        p {
-            margin-right: 0.25rem;
-            margin-bottom: 0.5rem;
-            span {
-                margin-right: 0.25rem;
-            }
-            input, select {
-                padding: 0 0.25rem;
-            }
-        }
-        .btn {
-            display: inline-block;
-            margin-right: 0.5rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            width: 25%;
-            text-align: center;
-            padding: 0.25rem;
-            outline: 1px solid black;
-        }
-        .btn:hover, .btn:active {
-            background-color: gray;
-            color: white;
-        }
-        .user-pfp {
-            width: 10rem;
-            height: 10rem;
-            margin-right: 1rem;
-        }
-        a {
-            color: black;
-        }
-        .role {
-            background-color: black;
-            color: white;
-            width: 10rem;
-            text-align: center;
-        }
+    .userImg {
+        margin: auto;
+        width: 100%;
+        height: 200px;
+        display: block;
+        object-fit: cover;
+        object-position: center;
+        margin-top: 10px;
+        border-radius: 20px;
     }
-    .host-request-container {
-        margin-top: 1rem;
-        /*  */
-        .host-request-container-header {
-            display: flex;
-            flex-direction: column;
-            .host-request-detail {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                outline: 1px solid black;
-                padding: 1rem;
-                svg {
-                    margin-right: 1rem;
+    .userMeta {
+        padding:10px;
+        .umCombo {
+            display:flex;
+            flex-direction:row;
+            .umItem {
+                flex:1;
+                display:flex;
+                flex-direction:column;
+                padding:10px;
+                span {
+                    color: #717171;
+                    font-size: 12px;
+                    margin-bottom: 10px;
+                }
+                div {
+                    font-size:14px;
                 }
             }
         }
-        .host-request-detail {
-            margin-bottom: 1rem;
-        }
-        img {
-            margin: 0 auto;
-            display: block;
-            width: 10rem;
-            height: 10rem;
-            outline: 1px solid black;
-        }
     } 
+    .userRequest {
+        margin-top:20px;
+        border-radius: 20px;
+        background-color: #F5F5F4;
+        border: 1px solid rgba(17, 17, 17, 0.04);
+    }
+    .view-box {
+        padding:20px;
+        font-size:14px;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content: space-between;
+        border-bottom:1px solid #e7e7e7;
+    }
+    .reveal {
+        padding:50px 50px;
+        background-color:#FFFFFF;
+        border-bottom:1px solid #e7e7e7;
+    }
+    #nice-image {
+        width:100%;
+        margin:auto;
+        display:block;
+        object-fit:contain;
+    }
+    .status-box {
+        padding:20px;
+        font-size:14px;
+        div {
+            display:flex;
+        }
+    }
     .back:hover, .back:active {
         color: gray;
     }
@@ -211,46 +227,73 @@ const Wrapper = styled.div`
     .accept:hover, .accept:active {
         color: green;
     }
-    .icon {
-        cursor: pointer;
-    }
-    .view-box {
-        cursor: pointer;
-        user-select: none;
-        outline: 1px solid black;
-        margin-bottom: 1rem;
-        padding: 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .icon {
-            outline: 1px solid black;
-            padding: 0 0.5rem;
+    .actionRow {
+        gap:20px;
+        display:flex;
+        flex-direction:row;
+        padding:20px 0px;
+        button.approve {
+            height: 49px;
+            padding: 0px 60px;
+            color: #FFFFFF;
+            font-weight: 500;
+            border-width: 0px;
+            border-radius: 12px;
+            background-color: #2d814e;
+            cursor:pointer;
         }
-    }  
-    #nice-image {
-        margin-bottom: 1rem;
-        width: 100%;
-        height: 20rem;
+        button.reject {
+            height: 49px;
+            padding: 0px 60px;
+            color: #FFFFFF;
+            font-weight: 500;
+            border-width: 0px;
+            border-radius: 12px;
+            background-color: #d13b53;
+            cursor:pointer;
+        }
     }
+    
     .status-box {
         display: flex;
         justify-content: space-between;
         align-items: center;
         .circle {
-            margin-left: 0.5rem;
-            outline: 1px solid black;
-            padding: 0 0.75rem;
-            border-radius: 50%;
+            display:flex;
+            min-width:20px;
+            min-height:20px;
+            border-radius:8px;
+            margin-left:10px;
         }
         .yellow {
-            background-color: yellow;
+            background-color: gold;
         }
         .green {
-            background-color: green;
+            background-color: #2d814e;
         }
         .red {
-            background-color: red;
+            background-color: #d13b53;
+        }
+    }
+    @media (max-width:768px) {
+        .containerMain {
+            padding-top:30px;
+            flex-direction:column;
+        }
+        .containerMain .mcLeft {
+            padding:0px 30px;
+        }
+        .containerMain .mcRight {
+            padding-left:0px;
+            .userMeta {
+                padding:30px;
+            }
+            .userRequest {
+                margin:0px 30px;
+            }
+        }
+        .userImg {
+            margin-top:0px;
         }
     }
 `;

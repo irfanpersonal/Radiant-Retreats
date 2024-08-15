@@ -43,64 +43,82 @@ const AddListing: React.FunctionComponent = () => {
         dispatch(createListing(formData));
     }
     return (
-        <Wrapper>
+        <Wrapper className="containerMin">
             <form onSubmit={handleSubmit}>
                 <h1>Create Listing</h1>
-                <div>
-                    <label htmlFor="name">Name</label>
-                    <input id="name" type="text" name="name"/>
+                <div className="comboBox">
+                    <div>
+                        <label htmlFor="name">Name</label>
+                        <input id="name" type="text" name="name"/>
+                    </div> 
                 </div>
-                <div>
-                    <label htmlFor="propertyType">Property Type</label>
-                    <select id="propertyType" name="propertyType">
-                        <option value="house">House</option>
-                        <option value="apartment">Apartment</option>
-                        <option value="guesthouse">Guesthouse</option>
-                        <option value="hotel">Hotel</option>
-                    </select>
+                <div className="comboBox">
+                    <div>
+                        <label htmlFor="propertyType">Property Type</label>
+                        <select id="propertyType" name="propertyType">
+                            <option value="house">House</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="guesthouse">Guesthouse</option>
+                            <option value="hotel">Hotel</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="description">Description</label>
-                    <textarea id="description" name="description"></textarea>
+                <div className="comboBox">
+                    <div>
+                        <label htmlFor="description">Description</label>
+                        <textarea id="description" name="description"></textarea>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="price">Price</label>
-                    <input id="price" type="number" min="1"/>
+                <div className="comboBox">
+                    <div>
+                        <label htmlFor="price">Price</label>
+                        <input id="price" type="number" min="1"/>
+                    </div>
+                    <div>
+                        <label htmlFor="maintenanceFee">Maintenance Fee</label>
+                        <input id="maintenanceFee" type="number" min="1" name="maintenanceFee"/>
+                    </div> 
                 </div>
-                <div>
-                    <label htmlFor="maintenanceFee">Maintenance Fee</label>
-                    <input id="maintenanceFee" type="number" min="1" name="maintenanceFee"/>
+   
+                <div className="comboBox">
+                    <div>
+                        <label htmlFor="bedrooms">Bedrooms</label>
+                        <input id="bedrooms" type="number" min="1" name="bedrooms"/>
+                    </div>
+                    <div>
+                        <label htmlFor="housingCapacity">Housing Capacity</label>
+                        <input id="housingCapacity" type="number" min="1" name="housingCapacity"/>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="housingCapacity">Housing Capacity</label>
-                    <input id="housingCapacity" type="number" min="1" name="housingCapacity"/>
+                <div className="comboBox">
+                    <div>
+                        <label htmlFor="beds">Beds</label>
+                        <input id="beds" type="number" min="1" name="beds"/>
+                    </div>
+                    <div>
+                        <label htmlFor="baths">Baths</label>
+                        <input id="baths" type="number" min="1" name="baths"/>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="bedrooms">Bedrooms</label>
-                    <input id="bedrooms" type="number" min="1" name="bedrooms"/>
+            
+                <div className="comboBox photosComboBox">
+                    <div>
+                        <label htmlFor="photos">Photos (Max 5)</label>
+                        <input id="photos" type="file" multiple onChange={(input) => {
+                            if (input.target.files!.length > 5) {
+                                input.target.style.outline = '1px solid red';
+                                setTimeout(() => {
+                                    input.target.style.outline = '';
+                                }, 2000);
+                                input.target.value = '';
+                            }
+                        }}/>
+                    </div>
+                    <div className="holdPhotos" id="holdPhotos"></div>
                 </div>
-                <div>
-                    <label htmlFor="beds">Beds</label>
-                    <input id="beds" type="number" min="1" name="beds"/>
-                </div>
-                <div>
-                    <label htmlFor="baths">Baths</label>
-                    <input id="baths" type="number" min="1" name="baths"/>
-                </div>
-                <div>
-                    <label htmlFor="photos">Photos (Max 5)</label>
-                    <input id="photos" type="file" multiple onChange={(input) => {
-                        if (input.target.files!.length > 5) {
-                            input.target.style.outline = '1px solid red';
-                            setTimeout(() => {
-                                input.target.style.outline = '';
-                            }, 2000);
-                            input.target.value = '';
-                        }
-                    }}/>
-                </div>
-                <div>
-                    <label htmlFor="amenities">Amenities (1 Required)<span className="add-btn" onClick={addAmenity}>+</span></label>
+                <div className="comboBox">
+                    <div>
+                    <label htmlFor="amenities">Amenities (1 Required)<span className="add-btn" onClick={addAmenity}>Add</span></label>
                     {amenitiesInput.map((amenityInput: string, index: number) => {
                         return (
                             <div key={index} className="amenity-input-container">
@@ -111,84 +129,140 @@ const AddListing: React.FunctionComponent = () => {
                                         return newAmenitiesInput;
                                     }); 
                                 }}/>
-                                <button onClick={() => removeAmenity(index)}>X</button>
+                                <button onClick={() => removeAmenity(index)}>Delete</button>
                             </div>
                         );
                     })}
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="country">Country</label>
-                    <select id="country" name="country" required>
-                        <option value=""></option>
-                        {countries.map((country, index) => {
-                            return (
-                                <option key={index} value={country}>{country}</option>
-                            );
-                        })}
-                    </select>
+         
+                <div className="comboBox">
+                    <div>
+                        <label htmlFor="address">Address</label>
+                        <input id="address" type="text" name="address"/>
+                    </div>
+                    <div>
+                        <label htmlFor="country">Country</label>
+                        <select id="country" name="country" required>
+                            <option value=""></option>
+                            {countries.map((country, index) => {
+                                return (
+                                    <option key={index} value={country}>{country}</option>
+                                );
+                            })}
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="address">Address</label>
-                    <input id="address" type="text" name="address"/>
+
+                <div className="comboBox">
+                    <div className="createListingAction">
+                        <button type="submit" disabled={createListingLoading}>{createListingLoading ? 'Creating Listing' : 'Create Listing'}</button>
+                    </div>
                 </div>
-                <button type="submit" disabled={createListingLoading}>{createListingLoading ? 'Creating Listing' : 'Create Listing'}</button>
+                
             </form>
         </Wrapper>
     );
 }
 
 export const Wrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
     form {
-        outline: 1px solid black;
-        padding: 1rem;
-        width: 50%;
+        padding: 12px;
+        margin-top:50px;
+        margin-bottom:50px;
+        border-radius: 20px;
+        background-color: #F5F5F4;
+        border: 1px solid rgba(17, 17, 17, 0.04);
         h1 {
-            text-align: center;
-            border-bottom: 1px solid black;
-            margin-bottom: 1rem;
+            padding:12px;
+            font-size:24px;
+            font-weight:500;
         }
-        label {
-            display: block;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 0.25rem;
-            margin-bottom: 0.5rem;
-        }
-        textarea {
-            resize: none;
-            height: 10rem;
-        }
-        button {
-            margin-top: 0.5rem;
-            width: 100%;
-            padding: 0.25rem;
-        }
-        input[type="file"] {
-            padding: 0;
-        }
-        .add-btn {
-            user-select: none;
-            cursor: pointer;
-            background-color: gray;
-            outline: 1px solid black;
-            padding: 0 0.5rem;
-            margin-left: 0.5rem;
-        }
-        .add-btn:hover, .add-btn:active {
-            background-color: white;
+    }
+    .comboBox {
+        display:flex;
+        flex-direction:row;
+        div {
+            flex:1;
+            padding:12px;
+            display:flex;
+            flex-direction:column;
         }
         .amenity-input-container {
-            margin: 0.5rem 0;
-            input {
-                width: 75%;
-            }
+            padding:0px;
+            margin:10px 0px;
+            flex-direction:row;
             button {
-                width: 25%;
+                cursor:pointer;
+                color:#FFFFFF;
+                border-width:0px;
+                padding:0px 20px;
+                margin-left:20px;
+                border-radius:12px;
+                background-color:#d13b53;
             }
+        }
+        label {
+            color: #717171;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        input , select {
+            flex: 1;
+            width:100%;
+            display: flex;
+            font-size: 14px;
+            border-width: 0px;
+            border-radius: 12px;
+            background-color: #FFFFFF;
+            padding: 14px 14px 14px 14px;
+        }
+        textarea {
+            flex: 1;
+            display: flex;
+            font-size: 14px;
+            border-width: 0px;
+            border-radius: 12px;
+            background-color: #FFFFFF;
+            padding: 14px 14px 14px 14px;
+        }
+        .createListingAction {
+            flex-direction:row;
+            button {
+                height: 48px;
+                color: #FFFFFF;
+                font-weight: 500;
+                border-radius: 12px;
+                background-color: #2d814e;
+                border-width: 0px;
+                margin-bottom: 0px;
+                cursor:pointer;
+                padding:0px 60px;
+            }
+            .cancelEdit {
+                margin-left:20px;
+                background-color:#d13b53;
+            }
+        }
+    }
+    .holdPhotos img {
+        border-radius:12px;
+        margin-top:15px;
+    }
+    .add-btn {
+        font-size:10px;
+        color:#FFFFFF;
+        padding:6px 15px;
+        margin-left: 10px;
+        border-radius:8px;
+        background-color:#000000;
+        cursor:pointer;
+    }
+    @media (max-width:768px) {
+        form {
+            margin-top:0px;
+            margin-bottom:0px;
+            border-radius:0px;
         }
     }
 `;

@@ -14,28 +14,37 @@ const Reservation: React.FunctionComponent = () => {
     }, []);
     return (
         <Wrapper>
-            <div className="twenty">
-                <ReservationSearchBox resetSearchBoxValues={resetSearchBoxValues} updateSearchBoxValues={updateSearchBoxValues} updateSearch={getAllUserReservations} searchBoxValues={searchBoxValues}/>
+            <div className="stacked">
+                <div className="twenty">
+                    <ReservationSearchBox resetSearchBoxValues={resetSearchBoxValues} updateSearchBoxValues={updateSearchBoxValues} updateSearch={getAllUserReservations} searchBoxValues={searchBoxValues}/>
+                </div>
+                <div className="seventy-five">
+                    {getAllUserReservationsLoading ? (
+                        <Loading title="Loading User Reservations" position='normal'/>
+                    ) : (
+                        <ReservationList data={reservations} numberOfPages={numberOfPages as number} page={page as number} totalReservations={totalReservations as number} changePage={setPage} updateSearch={getAllUserReservations}/>
+                    )}
+                </div>
             </div>
-            <div className="seventy-five">
-                {getAllUserReservationsLoading ? (
-                    <Loading title="Loading User Reservations" position='normal'/>
-                ) : (
-                    <ReservationList data={reservations} numberOfPages={numberOfPages as number} page={page as number} totalReservations={totalReservations as number} changePage={setPage} updateSearch={getAllUserReservations}/>
-                )}
-            </div>
+            
         </Wrapper>
     );
 }
 
 const Wrapper = styled.div`
-    display: flex;
-    .twenty {
-        width: 20%;
+    .stacked {
+        display:flex;
+        flex-direction:column;
     }
-    .seventy-five {
-        margin-left: auto;
-        width: 75%;
+    .container {
+        display: flex;
+        .twenty {
+            width: 20%;
+        }
+        .seventy-five {
+            margin-left: auto;
+            width: 75%;
+        }
     }
 `;
 

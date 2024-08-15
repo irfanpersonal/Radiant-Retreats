@@ -25,62 +25,156 @@ const ApplyForHost: React.FunctionComponent = () => {
         }
     }, []);
     return (
-        <Wrapper>
+        <Wrapper className="containerMin">
             <form onSubmit={handleSubmit}>
-                <div className="title">Apply for Host</div>
-                <div>
-                    <label htmlFor="phoneNumber">Phone Number</label>
-                    <input id="phoneNumber" type="tel" name="phoneNumber" required/>
+                <h1 className="title">Apply for Host</h1>
+                <div className="comboBox">
+                    <div>
+                        <label htmlFor="phoneNumber">Phone Number</label>
+                        <input id="phoneNumber" type="tel" name="phoneNumber" required/>
+                    </div>
                 </div>
-                <p className="file-input-info">Maximum file size of 2MB</p>
-                <div>
-                    <label htmlFor="governmentIssuedID">Government Issued ID (Image)</label>
-                    <input id="governmentIssuedID" type="file" name="governmentIssuedID" required/>
+                
+                <div className="comboBox">
+                    <div>
+                        <label htmlFor="governmentIssuedID">Government Issued ID (Image: Max 2mb)</label>
+                        <input id="governmentIssuedID" type="file" name="governmentIssuedID" required/>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="backgroundCheck">Background Check (Image)</label>
-                    <input id="backgroundCheck" type="file" name="backgroundCheck" required/>
+                <div className="comboBox">
+                    <div>
+                        <label htmlFor="backgroundCheck">Background Check (Image: Max 2mb)</label>
+                        <input id="backgroundCheck" type="file" name="backgroundCheck" required/>
+                    </div>
                 </div>
+                
                 <p className="file-input-info">Note: After submitting a host request, you will not be able to make any edits. Therefore, please ensure that all information is entered correctly before submission.</p>
-                <Link to='/profile'><button type="button">Cancel</button></Link>
-                <button type="submit" disabled={createHostRequestLoading}>{createHostRequestLoading ? 'Creating Host Request' : 'Create Host Request'}</button>
+                
+                <div className="actionRow">
+                    <button type="submit" disabled={createHostRequestLoading}>{createHostRequestLoading ? 'Creating Host Request' : 'Create Host Request'}</button>
+                    <Link to='/profile'><button type="button">Cancel</button></Link>
+                </div>
+                
             </form>
         </Wrapper>
     );
 }
 
 const Wrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
     form {
-        width: 50%;
-        outline: 1px solid black;
-        padding: 1rem;
-        .title {
-            text-align: center;
-            border-bottom: 1px solid black;
+        padding: 12px;
+        margin-top:50px;
+        margin-bottom:50px;
+        border-radius: 20px;
+        background-color: #F5F5F4;
+        border: 1px solid rgba(17, 17, 17, 0.04);
+        h1 {
+            padding:12px;
+            font-size:24px;
+            font-weight:500;
         }
-        .file-input-info {
-            background-color: lightgray;
-            margin-top: 1rem;
-            padding: 0.25rem;
-            outline: 1px solid black;
+    }
+    .comboBox {
+        display:flex;
+        flex-direction:row;
+        div {
+            flex:1;
+            padding:12px;
+            display:flex;
+            flex-direction:column;
+        }
+        .amenity-input-container {
+            padding:0px;
+            margin:10px 0px;
+            flex-direction:row;
+            button {
+                cursor:pointer;
+                color:#FFFFFF;
+                border-width:0px;
+                padding:0px 20px;
+                margin-left:20px;
+                border-radius:12px;
+                background-color:#000000;
+            }
         }
         label {
-            display: block;
-            margin-top: 0.5rem;
-            text-decoration: underline;
+            color: #717171;
+            font-size: 12px;
+            margin-bottom: 10px;
         }
-        input, button {
-            width: 100%;
-            padding: 0.25rem;
+        input , select {
+            flex: 1;
+            display: flex;
+            font-size: 14px;
+            border-width: 0px;
+            border-radius: 12px;
+            background-color: #FFFFFF;
+            padding: 14px 14px 14px 14px;
         }
-        input[type="file"] {
-            padding: 0;
+        textarea {
+            flex: 1;
+            display: flex;
+            font-size: 14px;
+            border-width: 0px;
+            border-radius: 12px;
+            background-color: #FFFFFF;
+            padding: 14px 14px 14px 14px;
         }
+        .createListingAction {
+            flex-direction:row;
+            button {
+                height: 48px;
+                color: #FFFFFF;
+                font-weight: 500;
+                border-radius: 12px;
+                background-color: #2d814e;
+                border-width: 0px;
+                margin-bottom: 0px;
+                cursor:pointer;
+                padding:0px 60px;
+            }
+            .cancelEdit {
+                margin-left:20px;
+                background-color:#d13b53;
+            }
+        }
+    }
+    .file-input-info {
+        margin:0px;
+        padding:10px;
+        font-size:14px;
+        color:#717171;
+    }
+    .actionRow {
+        padding:10px;
         button {
-            margin-top: 1rem;
+            height: 48px;
+            color: #FFFFFF;
+            font-weight: 500;
+            border-radius: 12px;
+            border-width: 0px;
+            padding:0px 40px;
+            background-color: #2d814e;
+            cursor:pointer;
+        }
+        a button {
+            height: 48px;
+            color: #FFFFFF;
+            font-weight: 500;
+            border-width: 0px;
+            border-radius: 12px;
+            margin-left:20px;
+            background-color: #d13b53;
+        }
+    }
+    @media (max-width:768px) {
+        .userAction.alternateColor {
+            margin-right:0px !important;
+        }
+        form {
+            margin-top:0px;
+            margin-bottom:0px;
+            border-radius:0px;
         }
     }
 `;

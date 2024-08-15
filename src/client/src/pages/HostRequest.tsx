@@ -15,7 +15,7 @@ const HostRequest: React.FunctionComponent = () => {
     }, []);
     return (
         <Wrapper>
-            <div className="container">
+            <div className="stacked">
                 <div className="twenty">
                     <FollowRequestSearchBox searchBoxValues={searchBoxValues} updateSearchBoxValues={updateSearchBoxValues} resetSearchBoxValues={resetSearchBoxValues} updateSearch={getAllHostRequests}/>
                 </div>

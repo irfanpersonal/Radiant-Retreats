@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import emptyProfilePicture from '../images/empty-profile-picture.jpeg';
@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {type useDispatchType, type useSelectorType} from '../store';
 import {getProfileData, logoutUser, updateUser} from '../features/user/userThunk';
 import {Loading, Modal, ListingList} from '../components';
+import { ViewType } from '../components/ListingList';
 import {countries, languages} from '../utils';
 import {saveAs} from 'file-saver'
 import {FaLink} from 'react-icons/fa';
@@ -19,6 +20,7 @@ const Profile: React.FunctionComponent = () => {
     const [showHostRequest, setShowHostRequest] = React.useState(false);
     const {getProfileDataLoading, user, logoutLoading, editProfileLoading} = useSelector((store: useSelectorType) => store.user);
     const {getAllProfileListingsLoading, listings, totalListings, numberOfPages, page, searchBoxValues} = useSelector((store: useSelectorType) => store.listing);
+    const [viewType, setViewType] = useState<ViewType>('grid');
     const toggleModal = () => {
         setShowHostRequest(currentState => {
             return !currentState;
@@ -35,6 +37,8 @@ const Profile: React.FunctionComponent = () => {
             console.error("Error downloading PDF:", error);
         }
     };
+
+      
     React.useEffect(() => {
         dispatch(getProfileData());
         if (user!.role === 'host') {
@@ -46,30 +50,40 @@ const Profile: React.FunctionComponent = () => {
             {getProfileDataLoading ? (
                 <Loading title="Loading Profile Data" position='normal'/>
             ) : (
-                <div>
-                    <div className="user-container">
-                        <div>
-                            <img className="user-pfp" src={user!.profilePicture || emptyProfilePicture} alt={user!.name}/>
-                            <div className="role">Role: {user!.role.toUpperCase()}</div>
-                            {(user!.hostRequest && user!.role !== 'admin') ? (
-                                <div className="center black underline" onClick={() => toggleModal()}>View Host Request</div>
-                            ) : (
-                                <>
-                                    {user!.role === 'guest' && (
-                                        <Link to='/profile/apply-for-host'><div className="center black">Create Host Request</div></Link>
-                                    )}
-                                </>
-                            )}
-                            {user!.role === 'admin' && (
-                                <Link to='/host-request'><div className="center black flex"><FaLink style={{marginRight: '0.5rem'}}/>Host Requests</div></Link>
+                <>
+                <div className="profileBanner">
+                    <img src={user!.profilePicture || emptyProfilePicture} alt={user!.name}/>
+                    <div className="blurInner"></div>
+                </div>
+                <div className="containerMin">
+                    <div className="userContainer">
+                        <div className="ucLeft">
+                            <img src={user!.profilePicture || emptyProfilePicture} alt={user!.name}/>
+                            {isEditing && (
+                                <div className="changePhoto">
+                                    <input id="profilePicture" type="file" name="profilePicture"/>
+                                </div>
                             )}
                         </div>   
-                        <div>
-                            <p><span>First Name:</span>{isEditing ? <input id="firstName" type="text" name="firstName" defaultValue={user!.firstName} required/> : user!.firstName}</p>
-                            <p><span>Last Name:</span>{isEditing ? <input id="lastName" type="text" name="lastName" defaultValue={user!.lastName} required/> : user!.lastName}</p>
-                            <p><span>Birthday:</span>{isEditing ? <input id="birthdate" type="date" name="birthdate" defaultValue={moment(user!.birthdate).utc().format('YYYY-MM-DD')} required/> : moment(user!.birthdate).utc().format('MM-DD-YYYY')}</p>
-                            <p><span>Email Address:</span>{isEditing ? <input id="email" type="text" name="email" defaultValue={user!.email} required/> : user!.email}</p>
-                            <p><span>Country:</span>
+                        <div className="ucRight">
+                            <div className="userItem">
+                                <span>First Name:</span>
+                                {isEditing ? <input id="firstName" type="text" name="firstName" defaultValue={user!.firstName} required/> : <div>{user!.firstName}</div>}
+                            </div>
+                            <div className="userItem">
+                                <span>Last Name:</span>
+                                {isEditing ? <input id="lastName" type="text" name="lastName" defaultValue={user!.lastName} required/> : <div>{user!.lastName}</div>}
+                            </div>
+                            <div className="userItem">
+                                <span>Birthday:</span>
+                                {isEditing ? <input id="birthdate" type="date" name="birthdate" defaultValue={moment(user!.birthdate).utc().format('YYYY-MM-DD')} required/> : <div>{moment(user!.birthdate).utc().format('MM-DD-YYYY')}</div>}
+                            </div>
+                            <div className="userItem">
+                                <span>Email Address:</span>
+                                {isEditing ? <input id="email" type="text" name="email" defaultValue={user!.email} required/> : <div className="lowercase">{user!.email}</div>}
+                            </div>
+                            <div className="userItem">
+                                <span>Country:</span>
                                 {isEditing ? (
                                     <select id="country" name="country" defaultValue={user!.country} required>
                                         <option value=""></option>
@@ -80,10 +94,11 @@ const Profile: React.FunctionComponent = () => {
                                         })}
                                     </select>
                                 ) : (
-                                    user!.country
+                                    <div>{user!.country}</div>
                                 )}
-                            </p>
-                            <p><span>Language:</span>
+                            </div>
+                            <div className="userItem">
+                                <span>Language:</span>
                                 {isEditing ? (
                                     <select id="language" name="language" defaultValue={user!.language} required>
                                         <option value=""></option>
@@ -94,37 +109,51 @@ const Profile: React.FunctionComponent = () => {
                                         })}
                                     </select>
                                 ) : (
-                                    user!.language
+                                    <div>{user!.language}</div>
                                 )}
-                            </p>
-                            {isEditing && (
-                                <p><span>Profile Picture:</span>
-                                    <input id="profilePicture" type="file" name="profilePicture"/>
-                                </p>
-                            )}
-                            <p onClick={() => {
-                                setIsEditing(currentState => {
-                                    return !currentState;
-                                });
-                            }} className="btn">{isEditing ? 'Cancel' : 'Edit'}</p>
-                            {isEditing && (
-                                <p onClick={() => {
-                                    const formData = new FormData();
-                                    formData.append('firstName', (document.querySelector('#firstName') as HTMLInputElement).value);
-                                    formData.append('lastName', (document.querySelector('#lastName') as HTMLInputElement).value);
-                                    formData.append('birthdate', (document.querySelector('#birthdate') as HTMLInputElement).value);
-                                    formData.append('email', (document.querySelector('#email') as HTMLInputElement).value);
-                                    formData.append('country', (document.querySelector('#country') as HTMLSelectElement).value);
-                                    formData.append('language', (document.querySelector('#language') as HTMLSelectElement).value);
-                                    if ((document.querySelector('#profilePicture') as HTMLInputElement).files![0]) {
-                                        formData.append('profilePicture', (document.querySelector('#profilePicture') as HTMLInputElement).files![0]);
-                                    }
-                                    dispatch(updateUser(formData));
-                                }} className="btn">{editProfileLoading ? 'Editing' : 'Edit'}</p>
-                            )}
+                            </div>
+                            <div className="userItem">
+                                <span>Role:</span>
+                                <div>{user!.role}</div>
+                            </div>
+                            <div className="userItem actionHolder">
+                                {isEditing && (
+                                    <div onClick={() => {
+                                        const formData = new FormData();
+                                        formData.append('firstName', (document.querySelector('#firstName') as HTMLInputElement).value);
+                                        formData.append('lastName', (document.querySelector('#lastName') as HTMLInputElement).value);
+                                        formData.append('birthdate', (document.querySelector('#birthdate') as HTMLInputElement).value);
+                                        formData.append('email', (document.querySelector('#email') as HTMLInputElement).value);
+                                        formData.append('country', (document.querySelector('#country') as HTMLSelectElement).value);
+                                        formData.append('language', (document.querySelector('#language') as HTMLSelectElement).value);
+                                        if ((document.querySelector('#profilePicture') as HTMLInputElement).files![0]) {
+                                            formData.append('profilePicture', (document.querySelector('#profilePicture') as HTMLInputElement).files![0]);
+                                        }
+                                        dispatch(updateUser(formData));
+                                    }} className="userAction">{editProfileLoading ? 'Editing' : 'Submit'}</div>
+                                )}
+                                <div className={`userAction ${isEditing ? 'Cancel' : 'Edit'}`} onClick={() => {
+                                    setIsEditing(currentState => {
+                                        return !currentState;
+                                    });
+                                }}>{isEditing ? 'Cancel' : 'Edit'}</div>
+                                {(user!.hostRequest && user!.role !== 'admin') ? (
+                                    <div className="userAction alternateColor" onClick={() => toggleModal()}>View Host Request</div>
+                                ) : (
+                                    <>
+                                        {user!.role === 'guest' && (
+                                            <Link to='/profile/apply-for-host'><div className="userAction alternateColor">Create Host Request</div></Link>
+                                        )}
+                                    </>
+                                )}
+                                {user!.role === 'admin' && (
+                                    <Link to='/host-request' className="userAction alternateColor"><div>Host Requests</div></Link>
+                                )}
+                            </div> 
                         </div> 
                     </div>
                 </div>
+                </>
             )}
             <>
                 {user!.role === 'host' && (
@@ -133,21 +162,33 @@ const Profile: React.FunctionComponent = () => {
                             <Loading title='Loading Profile Listings' position='normal' marginTop='1rem'/>
                         ) : (
                             <div style={{marginTop: '1rem'}}>
-                                <ListingList data={listings} numberOfPages={numberOfPages as number} page={page as number} totalListings={totalListings as number} changePage={setPage} updateSearch={getAllProfileListings}/>
+                                <ListingList data={listings} numberOfPages={numberOfPages as number} page={page as number} totalListings={totalListings as number} changePage={setPage} updateSearch={getAllProfileListings} viewType={viewType}
+                            setViewType={setViewType}/>
                             </div>
                         )}
                     </>
                 )}
             </>
-            <button onClick={() => {
-                dispatch(logoutUser());
-            }} className="logout-btn">{logoutLoading ? 'Logging Out' : 'Log Out'}</button>
             {showHostRequest && (
                 <Modal title="Viewing Host Request" toggleModal={toggleModal}>
-                    <div className="host-request-detail">Phone Number: {user!.hostRequest.phoneNumber}</div>
-                    <div className="host-request-detail">Government Issued ID:<span onClick={() => download(user!.hostRequest.governmentIssuedID)}>Download</span></div>
-                    <div className="host-request-detail">Background Check:<span onClick={() => download(user!.hostRequest.backgroundCheck)}>Download</span></div>
-                    <div className="host-request-detail main-detail">Status: {user!.hostRequest.status.charAt(0).toUpperCase() + user!.hostRequest.status.slice(1)}</div>
+                    <div className="contentList">
+                        <div className="contentListItem">
+                            <span>Phone Number:</span>
+                            <div>{user!.hostRequest.phoneNumber}</div>
+                        </div>
+                        <div className="contentListItem">
+                            <span>Government Issued ID:</span>
+                            <div className="downloadButton" onClick={() => download(user!.hostRequest.governmentIssuedID)}>Download</div>
+                        </div>
+                        <div className="contentListItem">
+                            <span>Background Check:</span>
+                            <div className="downloadButton" onClick={() => download(user!.hostRequest.backgroundCheck)}>Download</div>
+                        </div>
+                        <div className="contentListItem">
+                            <span>Status:</span>
+                            <div>{user!.hostRequest.status.charAt(0).toUpperCase() + user!.hostRequest.status.slice(1)}</div>
+                        </div>
+                    </div>
                 </Modal>                      
             )}
         </Wrapper>
@@ -155,98 +196,161 @@ const Profile: React.FunctionComponent = () => {
 }
 
 const Wrapper = styled.div`
-    .underline {
-        cursor: pointer;
-        text-decoration: underline;
+    .profileBanner {
+        width:100%;
+        height:200px;
+        position:relative;
+        img {
+            width:100%;
+            height:100%;
+            object-fit: cover;
+            object-position:center;
+        }
+        div {
+            top:0px;
+            bottom:0px;
+            left:0px;
+            right:0px;
+            position:absolute;
+            backdrop-filter: blur(20px); 
+            background-color:rgba(255,255,255,0.30);
+        }
     }
-    .black {
-        color: black;
-    }
-    .center {
-        margin-top: 0.5rem;
-        width: 10rem;
-        text-align: center;
-    }
-    .role {
-        background-color: black;
-        color: white;
-        width: 10rem;
-        text-align: center;
-    }
-    .user-container {
-        display: flex;
-        p {
-            margin-right: 0.25rem;
-            margin-bottom: 0.5rem;
+    .userContainer {
+        display:flex;
+        padding-top:50px;
+        .ucRight {
+            flex:1;
+            display:flex;
+            flex-direction:column;
+            align-items: flex-start;
+            padding-left:40px;
+        }
+        img {
+            width:200px;
+            height:200px;
+            border-radius:20px;
+        }
+        .changePhoto {
+            display:flex;
+            flex-direction:column;
+            max-width:200px;
+            margin-top:10px;
             span {
-                margin-right: 0.25rem;
-            }
-            input, select {
-                padding: 0 0.25rem;
+                font-size:14px;
             }
         }
-        .btn {
-            display: inline-block;
-            margin-right: 0.5rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            width: 25%;
-            text-align: center;
-            padding: 0.25rem;
-            outline: 1px solid black;
+        .userItem {
+            flex:1;
+            width:100%;
+            padding:10px;
+            display:flex;
+            flex-direction:column;
+            span {
+                color: #717171;
+                font-size: 12px;
+                margin-bottom: 10px;
+            }
+            div {
+                font-size:14px;
+                text-transform:capitalize;
+            }
+            div.lowercase {
+                text-transform:lowercase;
+            }
+            .userAction {
+                display:flex;
+                height: 49px;
+                min-width:160px;
+                padding: 0px 40px;
+                color: #FFFFFF;
+                font-weight: 500;
+                border-width: 0px;
+                border-radius: 12px;
+                align-items: center;
+                justify-content: center;
+                background-color: #2d814e;
+                margin-right:20px;
+                text-decoration:none;
+                cursor:pointer;
+                text-align:center;
+            }
+            .userAction.Cancel {
+                background-color:#d13b53;
+            }
+            .alternateColor {
+                color:#717171;
+                background-color: #F5F5F4;
+                border: 1px solid rgba(17, 17, 17, 0.04);
+            }
+            input , select {
+                flex: 1;
+                width: 100%;
+                display: flex;
+                border-radius: 12px;
+                padding: 13px 15px;
+                border: 1px solid rgba(17, 17, 17, 0.2);
+            }
         }
-        .btn:hover, .btn:active {
-            background-color: gray;
-            color: white;
+        .actionHolder {
+            display:flex;
+            flex-direction:row;
+            a {
+                text-decoration:none;
+            }
         }
-        .user-pfp {
-            width: 10rem;
-            height: 10rem;
-            margin-right: 1rem;
-        }
-        a {
-            color: black;
+        .hostRequest {
+            padding:10px;
+            font-size:14px;
+            background-color: #F5F5F4;
+            border: 1px solid rgba(17, 17, 17, 0.04);
         }
     }
-    .center-below {
-        display: flex;
-        flex-direction: column;
-    }
-    .logout-btn {
-        margin-top: 1rem;
-        width: 100%;
-        padding: 0.25rem;
-    }
-    .host-request-image {
-        outline: 1px solid black;
-        display: block;
-        margin: 0 auto;
-        width: 50%;
-        height: 10rem;
-    }
-    .host-request-detail {
-        margin: 0.5rem 0;
-        text-align: center;
+    .contentListItem {
+        padding:10px 0px;
         span {
+            color: #717171;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        .downloadButton {
+            user-select: none;
             cursor: pointer;
-            background-color: gray;
-            padding: 0 0.5rem;
-            margin-left: 0.5rem;
-            outline: 1px solid black;
-        }
-        span:hover, span:active {
-            background-color: white;
+            height:42px;
+            width:150px;
+            font-size:14px;
+            font-weight:500;
+            color:#FFFFFF;
+            display:flex;
+            border-radius:12px;
+            margin-top:6px;
+            align-items: center;
+            justify-content: center;
+            background-color:#2d814e;
         }
     }
-    .main-detail {
-        background-color: black;
-        color: white;
-        padding: 0.25rem;
+    @media (max-width:768px) {
+        .profileBanner {
+            height:140px;
+        }
+        .userContainer {
+            padding-top:30px;
+            flex-direction:column;
+        }
+        .userContainer .ucLeft {
+            padding-left:0px;
+            text-align:center;
+        }
+        .userContainer .ucRight {
+            padding-left:0px;
+            padding:20px;
+            border-bottom:1px solid #e7e7e7;
+        }
     }
-    .flex {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    @media (max-width:768px) {
+        .userAction.alternateColor {
+            margin-right:0px !important;
+        }
     }
 `;
 

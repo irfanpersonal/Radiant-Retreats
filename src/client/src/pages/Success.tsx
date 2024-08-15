@@ -39,27 +39,37 @@ const Wrapper = styled.div`
     padding: 1rem;
     margin: 0 auto;
     text-align: center;
+    padding-top:50px;
     div {
-        margin-top: 3rem;
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+        justify-content: center;;
     }
     h1 {
-        font-size: 2rem;
-        margin-bottom: 1rem;
+        font-size:24px;
+        font-weight:600;
+        text-align:center;
+        margin-bottom:20px;
     }
     p {
-        font-size: 1.25rem;
-        line-height: 1.6;
-        margin-bottom: 1rem;
+        font-size: 16px;
     }
     a {
-        background-color: lightgray;
-        padding: 0.25rem 1rem;
-        border-radius: 0.25rem;
-        text-decoration: none;
-        color: black;
-    }
-    a:hover, a:active {
-        outline: 1px solid black;
+        height: 48px;
+        color: #FFFFFF;
+        font-weight: 500;
+        border-radius: 12px;
+        background-color: #2d814e;
+        border-width: 0px;
+        padding:0px 40px;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        cursor:pointer;
+        font-size:14px;
+        margin-top:50px;
+        text-decoration:none;
     }
 `;
 

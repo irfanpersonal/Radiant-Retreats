@@ -5,7 +5,7 @@ const HomeLayout: React.FunctionComponent = () => {
     return (
         <>
             <Navbar/>
-            <section style={{padding: '1rem'}}>
+            <section style={{}}>
                 <Outlet/>
             </section>
         </>

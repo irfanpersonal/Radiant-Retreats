@@ -29,73 +29,130 @@ const SingleCashOut: React.FunctionComponent = () => {
             {getSingleCashOutLoading ? (
                 <Loading title="Loading Single Cash Out" position='normal'/>
             ) : (
-                <div className='cash-out'>
-                    <div className="cash-out-private">
-                        <div className="cash-out-info">
-                            <div><MdPerson/></div>
-                            <div>{showSensitiveInfo ? `${cashOut!.fullName}` : 'Full Name'}</div>
-                        </div>
-                        <div className="cash-out-info">
-                            <div><MdAccountCircle/></div>
-                            <div>{showSensitiveInfo ? `${cashOut!.accountNumber}` : 'Account Number'}</div>
-                        </div>
-                        <div className="cash-out-info">
-                            <div><MdLocalAtm/></div>
-                            <div>{showSensitiveInfo ? `${cashOut!.routingNumber}` : 'Routing Number'}</div>
-                        </div>
-                        <button onClick={() => {
-                            setShowSensitiveInfo(currentState => {
-                                return !currentState;
-                            });
-                        }}>{showSensitiveInfo ? 'Hide' : 'View'}</button>
-                    </div>
-                    <div className="cash-out-general">
-                        <div className="cash-out-general-container">
-                            <div>
-                                <img src={cashOut!.user.profilePicture || emptyProfilePicture} alt={`${cashOut!.user.firstName} ${cashOut!.user.lastName}`}/>
-                            </div>
-                            <div className="user-info">
-                                <div>Name: {cashOut!.user.firstName} {cashOut!.user.lastName}</div>
-                                <div>Birthday: {moment(cashOut!.user.birthdate).utc().format('YYYY-MM-DD')}</div>
-                                <div>Email Address: {cashOut!.user.email}</div>
-                                <div>Country: {cashOut!.user.country}</div>
-                                <div>Language: {cashOut!.user.language}</div>
-                                <div>Role: {capitalizeFirstLetter(cashOut!.user.role)}</div>
-                            </div>
-                        </div>
-                        <div className="cash-out-options">
-                            <div className="cash-out-option-info">
-                                <div>Amount: ${cashOut!.amount}</div>
-                            </div>
-                            <div className="cash-out-option-info">
-                                <div>Status: {capitalizeFirstLetter(cashOut!.status)}</div>
-                                <div className={`status-ball ${cashOut!.status === 'paid' ? 'green' : 'yellow'}`}></div>
-                            </div>
-                            {moment(cashOut!.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a') !== moment(cashOut!.updatedAt).utc().format('MMMM Do YYYY, h:mm:ss a') && (
-                                <div className="cash-out-option-info">
-                                    <div>Updated At: {moment(cashOut!.updatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</div>
+                <div className='containerMin'>
+                    <div className="mainContainer">
+                        <div className="mcLeft">
+                            <img className="userProfileIco" src={cashOut!.user.profilePicture || emptyProfilePicture} alt={`${cashOut!.user.firstName} ${cashOut!.user.lastName}`}/>
+                            <div className="paneBox">
+                                <div className="userInfoItem">
+                                    <div><MdPerson/></div>
+                                    <div>{showSensitiveInfo ? `${cashOut!.fullName}` : 'Full Name'}</div>
                                 </div>
-                            )}
-                            <div className="cash-out-option-info">
-                                <div>Created At: {moment(cashOut!.createdAt).utc().format('MMMM Do YYYY h:mm:ss a')}</div>
+                                <div className="userInfoItem">
+                                    <div><MdAccountCircle/></div>
+                                    <div>{showSensitiveInfo ? `${cashOut!.accountNumber}` : 'Account Number'}</div>
+                                </div>
+                                <div className="userInfoItem">
+                                    <div><MdLocalAtm/></div>
+                                    <div>{showSensitiveInfo ? `${cashOut!.routingNumber}` : 'Routing Number'}</div>
+                                </div>
+                                <button onClick={() => {
+                                    setShowSensitiveInfo(currentState => {
+                                        return !currentState;
+                                    });
+                                }}>{showSensitiveInfo ? 'Hide' : 'View'}</button>
                             </div>
-                            {user!.role === 'admin' && (
-                                <>
-                                    {cashOut!.status === 'pending' && (
-                                        <button onClick={toggleModal}>PAY</button>
+                            
+                        </div>
+                    
+                        <div className="mcRight">
+                            
+
+                            <div className="mcRightMain">    
+                                <div className="userInfo">
+                                    <div className="ucComboBox">
+                                        <div className="comboItem">
+                                            <span>Name:</span>
+                                            <div>{cashOut!.user.firstName} {cashOut!.user.lastName}</div>
+                                        </div>
+                                        <div className="comboItem">
+                                            <span>Email Address:</span>
+                                            <div>{cashOut!.user.email}</div>
+                                        </div>
+                                    </div>
+
+                                    <div className="ucComboBox">
+                                        <div className="comboItem">
+                                            <span>Birthday:</span>
+                                            <div>{moment(cashOut!.user.birthdate).utc().format('YYYY-MM-DD')}</div>
+                                        </div>
+                                        <div className="comboItem">
+                                            <span>Country:</span>
+                                            <div>{cashOut!.user.country}</div>
+                                        </div>
+                                    </div>
+
+
+                                    <div className="ucComboBox">
+                                        <div className="comboItem">
+                                            <span>Language:</span>
+                                            <div>{cashOut!.user.language}</div>
+                                        </div>
+                                        <div className="comboItem">
+                                            <span>Role:</span>
+                                            <div>{capitalizeFirstLetter(cashOut!.user.role)}</div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div className="userCashout">
+                                    <div className="cashoutCombo">
+                                        <div className="comboItem">
+                                            <span>Amount: </span>
+                                            <div>${cashOut!.amount}</div>
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    <div className="cashoutCombo">
+                                        <div className="comboItem">
+                                            <span>Status: </span>
+                                            <div>{capitalizeFirstLetter(cashOut!.status)} <div className={`status-ball ${cashOut!.status === 'paid' ? 'green' : 'yellow'}`}></div></div>
+                                        </div>
+                                    </div>
+
+                                    <div className="cashoutCombo">
+                                        <div className="comboItem">
+                                            <span>Created:</span>
+                                            <div>{moment(cashOut!.createdAt).utc().format('MMMM Do YYYY h:mm:ss a')}</div>
+                                        </div>
+                                    </div>
+
+                                    {moment(cashOut!.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a') !== moment(cashOut!.updatedAt).utc().format('MMMM Do YYYY, h:mm:ss a') && (
+                                    <div className="cashoutCombo">
+                                        <div className="comboItem">
+                                            <span>Updated At:</span>
+                                            <div> {moment(cashOut!.updatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</div>
+                                        </div>
+                                    </div>
                                     )}
-                                </>
-                            )}
+                                </div>
+
+                                {user!.role === 'admin' && (
+                                    <div className="cashoutAction">
+                                        {cashOut!.status === 'pending' && (
+                                            <button onClick={toggleModal}>Pay</button>
+                                        )}
+                                    </div>
+                                )}
+
+                            </div>                            
                         </div>
                     </div>
+                    
+                    
+                    
                 </div>
             )}
             {showConfirmPayoutModal && (
                 <Modal title="Confirm Payment" toggleModal={toggleModal}>
                     <div>Are you absolutely certain you've made the payment? Remember, from the user's perspective, it will appear as though it's been completed. Please ensure you're completely confident before clicking "confirm."</div>
-                    <button onClick={() => {
+                    <button className="submitModal" onClick={() => {
                         dispatch(updateSingleCashOut({status: 'paid', cashOutId: id!}));
-                    }} style={{width: '100%', padding: '0.25rem', marginTop: '0.5rem'}} disabled={updateSingleCashOutLoading}>{updateSingleCashOutLoading ? 'Confirming' : 'Confirm'}</button>
+                    }} style={{width: '100%'}} disabled={updateSingleCashOutLoading}>{updateSingleCashOutLoading ? 'Confirming' : 'Confirm'}</button>
                 </Modal>
             )}
         </Wrapper>
@@ -103,64 +160,164 @@ const SingleCashOut: React.FunctionComponent = () => {
 }
 
 const Wrapper = styled.div`
-    .cash-out {
-        display: flex;
-        .cash-out-private {
-            width: 30%;
-            margin-right: 1rem;
-            button {
-                width: 100%;
-                padding: 0.25rem;
-            }
+    .mainContainer {
+        display:flex;
+        flex-direction:row;
+        padding-top:50px;
+    }
+    .mcLeft {
+        width:300px;
+        .userProfileIco {
+            margin:auto;
+            width: 100%;
+            height: 200px;
+            display:block;
+            object-fit:cover;
+            object-position:center;
+            margin-bottom:25px;
+            border-radius: 20px;
         }
-        .cash-out-general {
-            width: 70%;
-            .cash-out-general-container {
-                display: flex;
-                border-bottom: 1px solid black;
-                padding-bottom: 1rem;
-            }
-            img {
-                width: 5rem;
-                height: 5rem;
-                outline: 1px solid black;
-                margin-right: 1rem;
-            }
-            .cash-out-options {
-                margin-top: 0.5rem;
-                button {
-                    width: 100%;
-                    padding: 0.25rem;
-                }
-                .cash-out-option-info {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;  
-                    outline: 1px solid black;
-                    padding: 0.25rem;
-                    margin-bottom: 1rem;
-                    .status-ball {
-                        width: 1rem;
-                        height: 1rem;
-                        border-radius: 50%;
-                        outline: 1px solid black;
-                    }
-                    .green {
-                        background-color: green;
-                    }   
-                    .yellow {
-                        background-color: yellow;
-                    }   
-                }
-            }
-        }
-        .cash-out-info {
+        .paneBox {
+            flex:1;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            outline: 1px solid black;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            padding: 12px;
+            flex-direction: column;
+            border-radius: 20px;
+            background-color: #F5F5F4;
+            border: 1px solid rgba(17, 17, 17, 0.04);
+            button {
+                height: 48px;
+                color: #FFFFFF;
+                font-weight: 500;
+                border-radius: 12px;
+                background-color: #717171;
+                border-width: 0px;
+                margin-top:12px;
+            }
+            .userInfoItem {
+                flex:1;
+                margin:0px 15px;
+                padding:12px 0px;
+                display:flex;
+                flex-direction:row-reverse;
+                align-items:center;
+                justify-content: space-between;
+                border-bottom:1px solid rgba(17, 17, 17, 0.04);
+                div {
+                    font-size:14px;
+                }
+            }
+        }
+    }
+    .mcRight {
+        flex:1;
+        display:flex;
+        flex-direction:row;
+        padding-left:40px;
+        .mcRightMain {
+            flex:1;
+            display:flex;
+            flex-direction:column;
+            .userInfo {
+                padding:10px;
+                .ucComboBox {
+                    display:flex;
+                    flex-direction:row;
+                    align-items:center;
+                    .comboItem {
+                        flex:1;
+                        display:flex;
+                        flex-direction:column;
+                        padding:10px;
+                        span {
+                            color: #717171;
+                            font-size: 12px;
+                            margin-bottom: 10px;
+                        }
+                        div {
+                            font-size:14px;
+                        }
+                    }
+                }
+            }
+            .userCashout {
+                padding:10px;
+                border-radius:20px;
+                background-color: #F5F5F4;
+                border: 1px solid rgba(17, 17, 17, 0.04);
+                .cashoutCombo {
+                    display:flex;
+                    flex-direction:row;
+                    align-items:center;
+                    .comboItem {
+                        flex:1;
+                        display:flex;
+                        flex-direction:column;
+                        padding:10px;
+                        span {
+                            color: #717171;
+                            font-size: 12px;
+                            margin-bottom: 10px;
+                        }
+                        div {
+                            font-size:14px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .cashoutAction {
+        display:flex;
+        flex-direction:row;
+        padding:20px 0px;
+        button {
+            width:250px;
+            max-width:100%;
+            height: 48px;
+            color: #FFFFFF;
+            font-weight: 500;
+            border-radius: 12px;
+            background-color: #2d814e;
+            border-width: 0px;
+            margin-top: 12px;
+            
+        }
+    }
+    .submitModal {
+        height: 48px;
+        color: #FFFFFF;
+        font-weight: 500;
+        border-radius: 12px;
+        background-color: #2d814e;
+        border-width: 0px;
+        margin-top:20px;
+    }
+    @media (max-width:768px) {
+        .containerMin {
+            padding:0px 30px;
+        }
+        .mainContainer {
+            padding-top:30px;
+            flex-direction:column;
+        }
+        .mcRight {
+            padding-left:0px;
+        }
+        .mcLeft {
+            width:100%;
+            margin-bottom:20px;
+        }
+        .userCashout {
+            margin-top:20px;
+            margin-bottom:30px;
+        }
+        .cashoutAction {
+            padding-top:0px;
+            padding-bottom:30px;
+            button {
+                margin-top:0px;
+            }
         }
     }
 `;

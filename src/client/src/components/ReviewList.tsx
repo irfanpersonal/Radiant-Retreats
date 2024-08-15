@@ -20,11 +20,9 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = ({data, totalReview
     return (
         <Wrapper>
             {totalReviews ? (
-                <div className="list-info">
-                    <div className="title">{totalReviews} Review{totalReviews! > 1 && 's'} Found...</div>
-                </div>
+                null
             ): (
-                <div style={{textAlign: 'center', marginTop: '1rem', textDecoration: 'underline'}}>No Reviews Found</div>
+                <div className="noReviews">No Reviews Found</div>
             )}
             <section>
                 {data.map(item => {
@@ -62,6 +60,19 @@ const Wrapper = styled.section`
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
+    }
+
+    .noReviews {
+        display: flex;
+        // padding: 20px;
+        font-size:14px;
+        margin-top: 40px;
+        border-radius: 12px;
+        flex-direction: row;
+        align-items: center;
+        justify-content:center;
+        // background-color: #F5F5F4;
+        // border: 1px solid rgba(17, 17, 17, 0.04);
     }
 `;
 

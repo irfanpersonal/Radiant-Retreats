@@ -14,7 +14,7 @@ const User: React.FunctionComponent = () => {
     }, []);
     return (
         <Wrapper>
-            <div className="container">
+            <div className="stacked">
                 <div className="twenty">
                     <UserSearchBox resetSearchBoxValues={resetSearchBoxValues} updateSearchBoxValues={updateSearchBoxValues} updateSearch={getAllUsers} searchBoxValues={searchBoxValues}/>
                 </div>
@@ -31,6 +31,10 @@ const User: React.FunctionComponent = () => {
 }
 
 const Wrapper = styled.div`
+    .stacked {
+        display:flex;
+        flex-direction:column;
+    }
     .container {
         display: flex;
         .twenty {

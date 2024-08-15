@@ -18,15 +18,23 @@ const Earnings: React.FunctionComponent = () => {
     }, []);
     return (
         <Wrapper>
+            <div>
+                <CashOutSearchBox resetSearchBoxValues={resetSearchBoxValues} updateSearchBoxValues={updateSearchBoxValues} updateSearch={getAllMyCashOuts} searchBoxValues={searchBoxValues}/>
+            </div>
+
             {getEarningsDataLoading ? (
                 <Loading title="Loading Earning" position='normal'/>
             ) : (
                 <>
                     <div className="earnings-header">
-                        <h1>Balance</h1>
+                        <div>
+                            <h1>Balance</h1>
+                            <div className="balance">${earningsData!.balance}</div>
+                        </div>
+                        
                         <button onClick={toggleModal} type="button" disabled={!earningsData!.canCashOut || earningsData!.balance === 0}>Cash Out</button>
                     </div>
-                    <h1 className="balance">${earningsData!.balance}</h1>
+                    
                     {showCashOutModal && (
                         <Modal title='Card Information' toggleModal={toggleModal}>
                             <CashOut balance={earningsData!.balance} toggleModal={toggleModal}/>
@@ -34,13 +42,12 @@ const Earnings: React.FunctionComponent = () => {
                     )}
                 </>
             )}
-            <div style={{marginTop: '1rem'}}>
-                <CashOutSearchBox resetSearchBoxValues={resetSearchBoxValues} updateSearchBoxValues={updateSearchBoxValues} updateSearch={getAllMyCashOuts} searchBoxValues={searchBoxValues}/>
-            </div>
+            
+            
             {getAllMyCashOutsLoading ? (
                 <Loading title="Loading My Cash Outs" position='normal'/>
             ) : (
-                <div className="margin-top">
+                <div className="">
                     <CashOutList data={cashOuts} numberOfPages={numberOfPages as number} page={page as number} totalCashOuts={totalCashOuts as number} changePage={setPage} updateSearch={getAllMyCashOuts}/>
                 </div>
             )}
@@ -50,21 +57,25 @@ const Earnings: React.FunctionComponent = () => {
 
 const Wrapper = styled.div`
     .earnings-header {
-        display: flex;
+        padding:30px;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
         justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid black;
-        padding-bottom: 0.5rem;
-        button {
-            width: 20%;
-            padding: 0.25rem 0.5rem;
+        border-bottom:1px solid #e7e7e7;
+        h1 {
+            font-size:24px;
+            font-weight:500;
         }
-    }
-    .balance {
-        margin-top: 0.5rem;
-    }
-    .margin-top {
-        margin-top: 0.25rem;
+        button {
+            height: 48px;
+            padding: 0px 40px;
+            color: #FFFFFF;
+            font-weight: 500;
+            border-width: 0px;
+            border-radius: 12px;
+            background-color: #000000;
+        }
     }
 `;
 

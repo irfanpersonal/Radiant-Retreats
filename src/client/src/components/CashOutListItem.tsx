@@ -12,35 +12,73 @@ interface CashOutListItemProps {
 const CashOutListItem: React.FunctionComponent<CashOutListItemProps> = ({data}) => {
     return (
         <Wrapper>
-            <div className="cash"><FaMoneyBill/></div>
-            <div>{moment(data.createdAt).utc().format('MMMM Do YYYY')}</div>
-            <div>${data.amount}</div>
-            <div>Status: {capitalizeFirstLetter(data.status)}</div>
-            <Link to={`/cash-out/${data.id}`}>View More</Link>
+            {/* <div className="cash"><FaMoneyBill/></div> */}
+            <div className="comboItem">
+                <div className="cashoutItem">
+                    <span>Created:</span>
+                    <div>{moment(data.createdAt).utc().format('MMMM Do YYYY')}</div>
+                </div>
+                <div className="cashoutItem">
+                    <span>Amount:</span>
+                    <div>${data.amount}</div>
+                </div>
+            </div>
+       
+            <div className="comboItem">
+                <div className="cashoutItem">
+                    <span>Status:</span>
+                    <div>{capitalizeFirstLetter(data.status)}</div>
+                </div>
+
+                <div className="cashoutItem">
+                    <Link to={`/cash-out/${data.id}`}>View Details</Link>
+                </div>
+
+            </div>
+            
+            
+    
+            
         </Wrapper>
     );
 }
 
 const Wrapper = styled.article`
-    outline: 1px solid black;
-    padding: 1rem;
-    margin-top: 1rem;
-    text-align: center;
-    .cash {
-        border-bottom: 1px solid black;
-        margin-bottom: 0.5rem;
-    }
-    a {
-        display: block;
-        background-color: lightgray;
-        padding: 0 0.5rem;
-        border-radius: 1rem;
-        color: black;
-        text-decoration: none;
-        margin-top: 0.5rem;
-    }
-    a:hover {
-        outline: 1px solid black;
+    padding:12px;
+    border-radius:20px;
+    background-color: #F5F5F4;
+    border: 1px solid rgba(17, 17, 17, 0.04);
+    .comboItem {
+        display:flex;
+        flex-direction:row;
+        align-items:flex-end;
+        .cashoutItem {
+            flex:1;
+            display:flex;
+            flex-direction:column;
+            padding:12px;
+        }
+        span {
+            color: #717171;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        div {
+            font-size:14px;
+        }
+        a {
+            height: 48px;
+            font-size:14px;
+            display:flex;
+            color: #FFFFFF;
+            font-weight: 500;
+            border-width: 0px;
+            border-radius: 12px;
+            align-items: center;
+            justify-content: center;
+            background-color: #2d814e;
+            text-decoration:none;
+        }
     }
 `;
 
