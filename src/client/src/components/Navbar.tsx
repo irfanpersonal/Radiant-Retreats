@@ -24,7 +24,7 @@ const Navbar: React.FunctionComponent = () => {
                         <div className="mtDecor two"></div>
                         <div className="mtDecor three"></div>
                     </div>
-                    <Link to='/'> <div className="logo">radiant <span>retreats</span></div></Link>
+                    <Link to='/'> <div className="logo"><span>radiant</span> retreats</div></Link>
                 </div>
                 <div className="menu">
                     <NavLink to='/'>Home</NavLink>
@@ -59,7 +59,10 @@ const Navbar: React.FunctionComponent = () => {
                             <img src={user!.profilePicture || emptyProfilePicture} alt={user!.name}/>
                         </div>
                         <span className="userLabel">{user?.name?.split(' ')[0] || user.firstName}</span>
-                        <div className="displayNone logoutWrapper" onClick={() => { dispatch(logoutUser()); }}>
+                        <div className="displayNone logoutWrapper" onClick={() => { 
+                            dispatch(logoutUser());
+                            window.location.reload()
+                        }}>
                             <div>Logout</div>
                         </div>
                     </Link>
@@ -401,6 +404,9 @@ const Wrapper = styled.nav`
         .extendedMenu.active .menu {
             flex-direction:column;
         }
+    }
+    @media (max-width:490px) {
+        .logo span {display:none;}
     }
 `;
 
