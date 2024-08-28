@@ -61,7 +61,7 @@ const Wrapper = styled.form`
         input {
             width: 100%;
             padding: 0.25rem;
-            outline: none;
+            outline: 1px solid black;
             border: none;
         }
         input:focus {

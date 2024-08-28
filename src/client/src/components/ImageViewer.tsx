@@ -31,7 +31,7 @@ const ImageViewer: React.FunctionComponent<ImageViewerProps> = ({data, viewType,
             return newState;
         });
     }
-    console.log(data)
+    // console.log(data)
 
     let gridTemplateColumns;
   let gridTemplateRows;

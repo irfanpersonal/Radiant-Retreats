@@ -78,7 +78,7 @@ const initialState: IListing = {
     getAllListingsLoading: true,
     deleteSingleListingLoading: false,
     updateSingleListingLoading: false,
-    page: '',
+    page: 1,
     searchBoxValues: {
         search: '',
         country: '',
