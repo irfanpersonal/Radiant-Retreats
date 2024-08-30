@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {FaArrowAltCircleLeft, FaArrowAltCircleRight} from "react-icons/fa";
+import {IoIosArrowBack, IoIosArrowForward} from "react-icons/io";
 import {nanoid} from 'nanoid';
 import {useDispatch} from 'react-redux';
 import {type useDispatchType} from '../store';
@@ -35,10 +35,10 @@ const PaginationBox: React.FunctionComponent<PaginationBoxProps> = ({_id, page, 
             <span onClick={() => {
                 previousPage();
                 dispatch(updateSearch(_id));
-            }}><FaArrowAltCircleLeft/></span>
+            }}><IoIosArrowBack/></span>
             {Array.from({length: numberOfPages}, (_, index) => {
                 return (
-                    <span style={{backgroundColor: page === index + 1 ? 'blue' : ''}} onClick={() => {
+                    <span style={{filter: page === index + 1 ? 'invert(1)' : ''}} onClick={() => {
                         dispatch(changePage(index + 1));
                         dispatch(updateSearch(_id));
                     }} key={nanoid()}>{index + 1}</span>
@@ -47,7 +47,7 @@ const PaginationBox: React.FunctionComponent<PaginationBoxProps> = ({_id, page, 
             <span onClick={() => {
                 nextPage();
                 dispatch(updateSearch(_id));
-            }}><FaArrowAltCircleRight/></span>
+            }}><IoIosArrowForward/></span>
         </Wrapper>
     );
 }
@@ -56,16 +56,20 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    border-radius: 8px;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
     span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
+        height: 2rem;
+        min-width: 2rem;
+        border: 1px solid rgb(231, 231, 231);
         margin: 0 0.5rem;
-        padding: 10px;
-        border: 2px solid black;
-        border-radius: 5px;
-        color: #fff;
-        background-color: black;
+        background-color: white;
+        color: black;
         transition: background-color 0.3s, border-color 0.3s;
     }
     span > svg {

@@ -7,10 +7,9 @@ import homeThree from '../images/homeThree.jpeg'
 import {useDispatch, useSelector} from 'react-redux';
 import {type useDispatchType, type useSelectorType} from '../store';
 import {updateSearchBoxValues} from '../features/listing/listingSlice';
-import {countries} from '../utils';
+import {countriesForFrontend} from '../utils';
 import {useNavigate} from 'react-router-dom';
 import {FaUserPlus, FaHome, FaFilter, FaStar} from 'react-icons/fa';
-import { FaMagnifyingGlass } from "react-icons/fa6";
 
 
 const Home: React.FunctionComponent = () => {
@@ -43,13 +42,18 @@ const Home: React.FunctionComponent = () => {
                                 }}/>
                                 {showSearch && (
                                     <div className="search-results">
-                                        {countries.filter(country => country.toLowerCase().includes(searchBoxValues.country.toLowerCase())).slice(0, 3).map(filteredCountry => (
+                                        {countriesForFrontend.filter(country => country.toLowerCase().includes(searchBoxValues.country.toLowerCase())).slice(0, 3).map(filteredCountry => (
                                             <div onClick={() => {
+                                                if (filteredCountry === 'Anywhere') {
+                                                    dispatch(updateSearchBoxValues({name: 'country', value: ''}));
+                                                    navigate(`/listing`);
+                                                    return;
+                                                }
                                                 dispatch(updateSearchBoxValues({name: 'country', value: filteredCountry}));
                                                 navigate(`/listing`);
                                             }} className="country" key={filteredCountry}>{filteredCountry}</div>
                                         ))}
-                                        {countries.filter(country => country.toLowerCase().includes(searchBoxValues.country.toLowerCase())).length === 0 && <div className="nothing-found">No Country Found</div>}
+                                        {countriesForFrontend.filter(country => country.toLowerCase().includes(searchBoxValues.country.toLowerCase())).length === 0 && <div className="nothing-found">No Country Found</div>}
                                     </div>
                                 )}
                             </div>
@@ -156,7 +160,7 @@ const Wrapper = styled.div`
             align-items:center;
             justify-content: center;
             border-radius:20px;
-            padding:300px 20px 220px 20px;
+            padding:180px 20px 180px 20px;
             background-color:rgba(0,0,0,0.50);
         }
         h1 {
@@ -168,9 +172,9 @@ const Wrapper = styled.div`
     }
     .search-box {
         width:500px;
-        bottom:-36px;
         max-width:90%;
-        position:absolute;
+        margin-top:1rem;
+        position:relative;
         input {
             flex:1;
             width:100%;
@@ -219,7 +223,7 @@ const Wrapper = styled.div`
         font-weight:600;
     }
     .mainPadding {
-        padding:80px 0px 60px 0px;
+        padding:20px 0px 60px 0px;
     }
     .padTopNone {
         padding-top:0px;
