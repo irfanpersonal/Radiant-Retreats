@@ -40,7 +40,9 @@ const ListingSearchBox: React.FunctionComponent<ListingSearchBoxProps> = ({searc
                 <div className="comboRow">
                     <div>
                         <label htmlFor="search">Search</label>
-                        <input id="search" name="search" type="search" value={searchBoxValues.search} onChange={(event) => dispatch(updateSearchBoxValues({name: event.target.name, value: event.target.value}))}/>
+                        <input id="search" name="search" type="search" value={searchBoxValues.search} onChange={(event) => {
+                            dispatch(updateSearchBoxValues({name: event.target.name, value: event.target.value}));
+                        }}/>
                     </div>
                 </div>
 
@@ -57,8 +59,6 @@ const ListingSearchBox: React.FunctionComponent<ListingSearchBoxProps> = ({searc
                         </select>
                     </div>
                 </div>
-                
-                
                 
                 <div className="comboRow">
                     <div>

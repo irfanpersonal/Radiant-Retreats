@@ -148,6 +148,7 @@ const Wrapper = styled.div`
     .homeSplash {
         flex:1;
         display:flex;
+        flex-direction:column;
         border-radius:20px;
         background-size:cover;
         background-position:center;

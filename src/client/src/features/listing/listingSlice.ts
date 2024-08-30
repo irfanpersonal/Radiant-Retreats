@@ -85,9 +85,9 @@ const initialState: IListing = {
         priceMin: '',
         priceMax: '',
         housingAmount: '',
-        bedroomsAmount: '',
+        bedroomsAmount: '1',
         bedsAmount: '',
-        bathsAmount: '',
+        bathsAmount: '1',
         sort: '',
         propertyTypeValue: '',
         hostLanguage: ''

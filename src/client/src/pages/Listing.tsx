@@ -14,8 +14,8 @@ const Listing: React.FunctionComponent = () => {
     const { getAllListingsLoading, listings, totalListings, numberOfPages, page, searchBoxValues } = useSelector((store: useSelectorType) => store.listing);
     const [isFilterVisible, setIsFilterVisible] = useState(false);
     const [viewType, setViewType] = useState<ViewType>('grid');
-    const [bedrooms, setBedrooms] = useState<number>(2); 
-    const [bathrooms, setBathrooms] = useState<number>(2);
+    const [bedrooms, setBedrooms] = useState<number>(1); 
+    const [bathrooms, setBathrooms] = useState<number>(1);
     const filterPanelRef = useRef<HTMLDivElement>(null);
     const listingFilterRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -58,6 +58,7 @@ const Listing: React.FunctionComponent = () => {
 
     // Function to handle incrementing bedrooms
     const incrementBedrooms = () => {
+        dispatch(setPage(1))
         setBedrooms(prev => prev + 1);
         dispatch(updateSearchBoxValues({ name: 'bedroomsAmount', value: (bedrooms + 1).toString() }));
         dispatch(getAllListings()); // Trigger getAllListings after updating bedrooms
@@ -66,6 +67,7 @@ const Listing: React.FunctionComponent = () => {
     // Function to handle decrementing bedrooms
     const decrementBedrooms = () => {
         if (bedrooms > 1) {
+            dispatch(setPage(1))
             setBedrooms(prev => prev - 1);
             dispatch(updateSearchBoxValues({ name: 'bedroomsAmount', value: (bedrooms - 1).toString() }));
             dispatch(getAllListings()); // Trigger getAllListings after updating bedrooms
@@ -74,6 +76,7 @@ const Listing: React.FunctionComponent = () => {
 
     // Function to handle incrementing bathrooms
     const incrementBathrooms = () => {
+        dispatch(setPage(1))
         setBathrooms(prev => prev + 1);
         dispatch(updateSearchBoxValues({ name: 'bathsAmount', value: (bathrooms + 1).toString() }));
         dispatch(getAllListings()); // Trigger getAllListings after updating bathrooms
@@ -82,6 +85,7 @@ const Listing: React.FunctionComponent = () => {
     // Function to handle decrementing bathrooms
     const decrementBathrooms = () => {
         if (bathrooms > 1) {
+            dispatch(setPage(1))
             setBathrooms(prev => prev - 1);
             dispatch(updateSearchBoxValues({ name: 'bathsAmount', value: (bathrooms - 1).toString() }));
             dispatch(getAllListings()); // Trigger getAllListings after updating bathrooms
@@ -100,7 +104,10 @@ const Listing: React.FunctionComponent = () => {
                     </div>
                 </div>
                 <div className="listingOptions">
-                    <select className="dropdown" value={searchBoxValues.country} onChange={(e) => handleInputChange('country', e.target.value)}>
+                    <select className="dropdown" value={searchBoxValues.country} onChange={(e) => {
+                        dispatch(setPage(1));
+                        handleInputChange('country', e.target.value);
+                    }}>
                         <option value="">Anywhere</option>
                         {countries.map(country => (
                             <option key={country} value={country}>{country}</option>
