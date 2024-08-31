@@ -50,23 +50,23 @@ class Listing extends Model<IListing> {
             notEmpty: true
         },
         // You cannot make the "set" or "get" async. It won't work.
-        set(value: string) {
+        // set(value: string) {
             // The reason we are using the "this.setDataValue" instead of 
             // "this.name" is because that would just create an 
             // infinite loop of calls to the set method. Whereas if we do
             // "this.setDataValue" we avoid that infinite behavior.
-            const compressedName = zlib.deflateSync(value).toString('base64');
-            this.setDataValue('name', compressedName);
-        },
-        get() {
+            // const compressedName = zlib.deflateSync(value).toString('base64');
+            // this.setDataValue('name', compressedName);
+        // },
+        // get() {
             // The reason we are using the "this.getDataValue" instead of 
             // "this.name" is because that would just create an 
             // infinite loop of calls to the get method. Whereas if we do
             // "this.getDataValue" we avoid that infinite behavior.
-            const compressedName = this.getDataValue('name');
-            const uncompressedName = zlib.inflateSync(Buffer.from(compressedName, 'base64')).toString();
-            return uncompressedName;
-        }
+            // const compressedName = this.getDataValue('name');
+            // const uncompressedName = zlib.inflateSync(Buffer.from(compressedName, 'base64')).toString();
+            // return uncompressedName;
+        // }
     })
     declare name: string;
     @Column({

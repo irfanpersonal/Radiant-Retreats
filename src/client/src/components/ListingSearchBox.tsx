@@ -34,7 +34,10 @@ const ListingSearchBox: React.FunctionComponent<ListingSearchBoxProps> = ({searc
         <Wrapper onSubmit={handleSubmit}>
             <div className="filterHead">
                 <h1>Filters</h1>
-                <div onClick={() => dispatch(resetSearchBoxValues())}>Clear All</div>
+                <div onClick={() => {
+                    dispatch(resetSearchBoxValues());
+                    dispatch(updateSearch(_id));
+                }}>Clear All</div>
             </div>
             <div className="filterBody">
                 <div className="comboRow">
@@ -45,21 +48,6 @@ const ListingSearchBox: React.FunctionComponent<ListingSearchBoxProps> = ({searc
                         }}/>
                     </div>
                 </div>
-
-                <div className="comboRow">
-                    <div>
-                        <label htmlFor="country">Country</label>
-                        <select id="country" name="country" value={searchBoxValues.country} onChange={(event) => dispatch(updateSearchBoxValues({name: event.target.name, value: event.target.value}))}>
-                            <option value=""></option>
-                            {countries.map(country => {
-                                return (
-                                    <option key={nanoid()} value={country}>{country}</option>
-                                );
-                            })}
-                        </select>
-                    </div>
-                </div>
-                
                 <div className="comboRow">
                     <div>
                         <label htmlFor="priceMin">Price Minimum</label>
@@ -77,18 +65,6 @@ const ListingSearchBox: React.FunctionComponent<ListingSearchBoxProps> = ({searc
                         <input id="housingAmount" type="number" min="1" name="housingAmount" value={searchBoxValues.housingAmount} onChange={(event) => dispatch(updateSearchBoxValues({name: event.target.name, value: event.target.value}))}/>
                     </div>
                 </div>
-
-                <div className="comboRow">
-                    <div>
-                        <label htmlFor="bedroomsAmount">Bedrooms</label>
-                        <input id="bedroomsAmount" type="number" min="1" name="bedroomsAmount" value={searchBoxValues.bedroomsAmount} onChange={(event) => dispatch(updateSearchBoxValues({name: event.target.name, value: event.target.value}))}/>
-                    </div>
-                    <div>
-                        <label htmlFor="bathsAmount">Bathrooms</label>
-                        <input id="bathsAmount" type="number" min="1" name="bathsAmount" value={searchBoxValues.bathsAmount} onChange={(event) => dispatch(updateSearchBoxValues({name: event.target.name, value: event.target.value}))}/>
-                    </div>
-                </div>
-
                 <div className="comboRow">
                     <div>
                         <label htmlFor="bedsAmount">Beds Amount</label>

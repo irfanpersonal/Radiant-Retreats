@@ -29,6 +29,7 @@ const Listing: React.FunctionComponent = () => {
                 listingFilterRef.current &&
                 !listingFilterRef.current.contains(event.target as Node)
             ) {
+                // Unfocus the filter box
                 setIsFilterVisible(false);
             }
         };
@@ -141,7 +142,7 @@ const Listing: React.FunctionComponent = () => {
                 </div>
                 <div className="mainBody">
                     {getAllListingsLoading ? (
-                        <Loading title="Loading All Listings" position='normal' />
+                        <Loading title="Loading All Listings" position='normal' marginTop='1rem'/>
                     ) : (
                         <ListingList
                             data={listings}
